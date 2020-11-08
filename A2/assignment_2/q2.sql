@@ -26,7 +26,7 @@ CREATE VIEW curr_date AS SELECT current_date;
 DROP VIEW IF EXISTS php_branches CASCADE;
 CREATE VIEW php_branches AS 
 SELECT code 
-FROM LibraryBranch JOIN Ward ON code=id
+FROM LibraryBranch JOIN Ward ON ward=id
 WHERE name = 'Parkdale-High Park';
 
 
