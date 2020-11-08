@@ -21,7 +21,6 @@ CREATE TABLE q1 (
 -- the first time this file is imported.
 DROP VIEW IF EXISTS intermediate_step CASCADE;
 
-
 -- Define views for your intermediate steps here:
 
 

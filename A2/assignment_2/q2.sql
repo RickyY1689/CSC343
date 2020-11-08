@@ -17,9 +17,18 @@ create table q2 (
 -- the first time this file is imported.
 DROP VIEW IF EXISTS intermediate_step CASCADE;
 
-
 -- Define views for your intermediate steps here:
+
+-- Save current date 
+DROP VIEW IF EXISTS curr_date CASCADE; 
+CREATE VIEW curr_date AS SELECT current_date;
+
+DROP VIEW IF EXISTS php_branches CASCADE;
+CREATE VIEW php_branches AS 
+SELECT code 
+FROM LibraryBranch JOIN Ward ON code=id
+WHERE name = 'Parkdale-High Park';
 
 
 -- Your query that answers the question goes below the "insert into" line:
-insert into q2
+--insert into q2
