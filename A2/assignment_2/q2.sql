@@ -23,27 +23,37 @@ DROP VIEW IF EXISTS intermediate_step CASCADE;
 DROP VIEW IF EXISTS curr_date CASCADE; 
 CREATE VIEW curr_date AS SELECT current_date;
 
+-- Gets all branches from the php ward
 DROP VIEW IF EXISTS php_branches CASCADE;
 CREATE VIEW php_branches AS 
 SELECT code 
 FROM LibraryBranch JOIN Ward ON ward=id
 WHERE Ward.name = 'Parkdale-High Park';
 
+-- Get all checkouts from the branches in the php ward
 DROP VIEW IF EXISTS php_branches_checkouts;
 CREATE VIEW php_branches_checkouts AS
 SELECT id, patron, holding, checkout_time 
 FROM Checkout 
 WHERE library = ANY ( SELECT * FROM php_branches);
 
--- DROP VIEW IF EXISTS duedate_data;
--- CREATE VIEW duedate_data AS
--- SELECT patron, checkout_time, 
--- CASE 
---     WHEN htype = 'movies' OR htype = 'music' OR htype = 'magazines and newspapers'
---         THEN checkout_time + 7
---     WHEN htype = 'books' OR htype = 'audiobooks'
---         THEN checkout_time + 21
--- END duedate
--- FROM p php_branches_checkouts JOIN h Holding ON p.holding = h.id 
+-- Get all the checkouts which have yet to be returned 
+DROP VIEW IF EXISTS not_returned_checkouts;
+CREATE VIEW not_returned_checkouts AS 
+SELECT id, patron, checkout_time
+FROM php_branches_checkouts
+WHERE id != ANY (SELECT checkout FROM Return)
+
+-- Determines the duedates for all items yet to be returned from php ward branches
+DROP VIEW IF EXISTS duedate_data;
+CREATE VIEW duedate_data AS
+SELECT patron, checkout_time, 
+CASE 
+    WHEN htype = 'movies' OR htype = 'music' OR htype = 'magazines and newspapers'
+        THEN checkout_time + 7
+    WHEN htype = 'books' OR htype = 'audiobooks'
+        THEN checkout_time + 21
+END duedate
+FROM php_branches_checkouts p JOIN Holding h ON p.holding = h.id 
 -- Your query that answers the question goes below the "insert into" line:
 --insert into q2
