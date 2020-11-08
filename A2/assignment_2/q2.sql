@@ -31,7 +31,7 @@ WHERE Ward.name = 'Parkdale-High Park';
 
 DROP VIEW IF EXISTS php_branches_checkouts;
 CREATE VIEW php_branches_checkouts AS
-SELECT id, patron, holding, checkout_time, 
+SELECT id, patron, holding, checkout_time 
 FROM Checkout 
 WHERE library = ANY ( SELECT * FROM php_branches);
 
