@@ -27,8 +27,23 @@ DROP VIEW IF EXISTS php_branches CASCADE;
 CREATE VIEW php_branches AS 
 SELECT code 
 FROM LibraryBranch JOIN Ward ON ward=id
-WHERE name = 'Parkdale-High Park';
+WHERE Ward.name = 'Parkdale-High Park';
 
+DROP VIEW IF EXISTS php_branches_checkouts;
+CREATE VIEW php_branches_checkouts AS
+SELECT id, patron, holding, checkout_time, 
+FROM Checkout 
+WHERE library = ANY ( SELECT * FROM php_branches);
 
+DROP VIEW IF EXISTS duedate_data;
+CREATE VIEW duedate_data AS
+SELECT patron, checkout_time, 
+CASE 
+    WHEN htype = 'movies' OR htype = 'music' OR htype = 'magazines and newspapers'
+        THEN checkout_time + 7
+    WHEN htype = 'books' OR htype = 'audiobooks'
+        THEN checkout_time + 21
+END duedate
+FROM p php_branches_checkouts JOIN h Holding ON p.holding = h.id 
 -- Your query that answers the question goes below the "insert into" line:
 --insert into q2
