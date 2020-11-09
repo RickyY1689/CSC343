@@ -17,7 +17,12 @@ DROP VIEW IF EXISTS intermediate_step CASCADE;
 
 
 -- Define views for your intermediate steps here:
-
+DROP VIEW IF EXISTS author_publications;
+CREATE VIEW author_publications AS 
+SELECT holding, max(contributor)
+FROM HoldingContributor 
+GROUP BY holding 
+HAVING count(contributor) = 1;
 
 -- Your query that answers the question goes below the "insert into" line:
 insert into q6
