@@ -50,9 +50,9 @@ CREATE VIEW duedate_data AS
 SELECT patron, checkout_time, 
 CASE 
     WHEN htype = 'movies' OR htype = 'music' OR htype = 'magazines and newspapers'
-        THEN checkout_time + 7
+        THEN date checkout_time + integer 7
     WHEN htype = 'books' OR htype = 'audiobooks'
-        THEN checkout_time + 21
+        THEN date checkout_time + integer 21
 END duedate
 FROM php_branches_checkouts p JOIN Holding h ON p.holding = h.id 
 -- Your query that answers the question goes below the "insert into" line:
