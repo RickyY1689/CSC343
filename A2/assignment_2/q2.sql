@@ -40,7 +40,7 @@ WHERE library = ANY ( SELECT * FROM php_branches);
 -- Get all the checkouts which have yet to be returned 
 DROP VIEW IF EXISTS not_returned_checkouts;
 CREATE VIEW not_returned_checkouts AS 
-SELECT id, patron, checkout_time
+SELECT id, patron, DATE(checkout_time) checkout_time
 FROM php_branches_checkouts
 WHERE id != ANY (SELECT checkout FROM Return)
 
@@ -50,9 +50,9 @@ CREATE VIEW duedate_data AS
 SELECT patron, checkout_time, 
 CASE 
     WHEN htype = 'movies' OR htype = 'music' OR htype = 'magazines and newspapers'
-        THEN date checkout_time + integer 7
+        THEN checkout_time + 7
     WHEN htype = 'books' OR htype = 'audiobooks'
-        THEN date checkout_time + integer 21
+        THEN checkout_time + 21
 END duedate
 FROM php_branches_checkouts p JOIN Holding h ON p.holding = h.id 
 -- Your query that answers the question goes below the "insert into" line:
