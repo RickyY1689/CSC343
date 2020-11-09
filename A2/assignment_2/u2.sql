@@ -54,7 +54,7 @@ HAVING max(overdue) <= 7;
 DROP VIEW IF EXISTS auto_renew_holdings CASCADE;
 CREATE VIEW auto_renew_holdings AS 
 SELECT holdings 
-FROM overdue_data o JOIN qualifying_patrons p ON o.holdings = p.holdings;
+FROM overdue_data o JOIN qualifying_patrons p ON o.patron = p.patron;
 
 -- Define views for your intermediate steps here, and end with a
 -- INSERT, DELETE, or UPDATE statement.
