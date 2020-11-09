@@ -19,7 +19,7 @@ DROP VIEW IF EXISTS intermediate_step CASCADE;
 
 -- Define views for your intermediate steps here:
 
--- Save current date 
+-- Save current date (PRETTY SURE I DON'T NEED THIS ANYMORE)
 DROP VIEW IF EXISTS curr_date CASCADE; 
 CREATE VIEW curr_date AS SELECT current_date;
 

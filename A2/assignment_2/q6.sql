@@ -74,12 +74,6 @@ SELECT p.card_number, count(author)
 FROM devoted_fans d FULL JOIN Patron p ON d.patron = p.card_number
 GROUP BY p.card_number;
 
--- Get a count of author works checked out by the patrons 
--- DROP VIEW IF EXISTS patron_author_count;
--- CREATE VIEW patron_author_count AS 
--- SELECT patron, author, count(holding)
--- FROM book_checkouts
-
 -- Your query that answers the question goes below the "insert into" line:
 insert into q6
 SELECT * FROM patron_devotedness;
