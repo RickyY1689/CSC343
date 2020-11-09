@@ -40,7 +40,7 @@ WHERE library = ANY ( SELECT * FROM php_branches);
 -- Get all the checkouts which have yet to be returned 
 DROP VIEW IF EXISTS not_returned_checkouts;
 CREATE VIEW not_returned_checkouts AS 
-SELECT branch, id, patron, DATE(checkout_time) checkout_time
+SELECT branch, id, patron, holding, DATE(checkout_time) checkout_time
 FROM php_branches_checkouts
 WHERE id != ANY (SELECT checkout FROM Return);
 
@@ -54,15 +54,14 @@ CASE
     WHEN htype = 'books' OR htype = 'audiobooks'
         THEN checkout_time + 21
 END duedate
-FROM not_returned_checkouts p JOIN Holding h ON p.holding = h.id;
+FROM not_returned_checkouts n JOIN Holding h ON n.holding = h.id;
 
 -- Determine overdue books 
-DROP VIEW IF EXISTS overdue_data
+DROP VIEW IF EXISTS overdue_data;
 CREATE VIEW overdue_data AS
 SELECT branch, patron, title, email 
 FROM duedate_data JOIN Patron ON patron = card_number 
 WHERE duedate < (SELECT current_date);
-
 
 -- Your query that answers the question goes below the "insert into" line:
 --insert into q2
