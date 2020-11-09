@@ -33,27 +33,36 @@ WHERE Ward.name = 'Parkdale-High Park';
 -- Get all checkouts from the branches in the php ward
 DROP VIEW IF EXISTS php_branches_checkouts;
 CREATE VIEW php_branches_checkouts AS
-SELECT id, patron, holding, DATE(checkout_time) checkout_time
+SELECT library branch, id, patron, holding, DATE(checkout_time) checkout_time
 FROM Checkout 
 WHERE library = ANY ( SELECT * FROM php_branches);
 
 -- Get all the checkouts which have yet to be returned 
 DROP VIEW IF EXISTS not_returned_checkouts;
 CREATE VIEW not_returned_checkouts AS 
-SELECT id, patron, DATE(checkout_time) checkout_time
+SELECT branch, id, patron, DATE(checkout_time) checkout_time
 FROM php_branches_checkouts
 WHERE id != ANY (SELECT checkout FROM Return);
 
 -- Determines the duedates for all items yet to be returned from php ward branches
 DROP VIEW IF EXISTS duedate_data;
 CREATE VIEW duedate_data AS
-SELECT patron, checkout_time, 
+SELECT branch, patron, title, checkout_time, 
 CASE 
     WHEN htype = 'movies' OR htype = 'music' OR htype = 'magazines and newspapers'
         THEN checkout_time + 7
     WHEN htype = 'books' OR htype = 'audiobooks'
         THEN checkout_time + 21
 END duedate
-FROM php_branches_checkouts p JOIN Holding h ON p.holding = h.id;
+FROM not_returned_checkouts p JOIN Holding h ON p.holding = h.id;
+
+-- Determine overdue books 
+DROP VIEW IF EXISTS overdue_data
+CREATE VIEW overdue_data AS
+SELECT branch, patron, title, email 
+FROM duedate_data JOIN Patron ON patron = card_number 
+WHERE duedate < (SELECT current_date);
+
+
 -- Your query that answers the question goes below the "insert into" line:
 --insert into q2
