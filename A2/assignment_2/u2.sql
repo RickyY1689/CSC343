@@ -46,14 +46,19 @@ HAVING count(id) <= 5;
 -- Qualifying patrons who have less than 5 books checked out and none are overdue by more than 7 days
 DROP VIEW IF EXISTS qualifying_patrons CASCADE;
 CREATE VIEW qualifying_patrons AS 
-SELECT o.patron, o.holding
+SELECT o.patron
 FROM overdue_data o JOIN small_checkouts s ON o.patron = s.patron
 GROUP BY o.patron
 HAVING max(overdue) <= 7;
+
+DROP VIEW IF EXISTS auto_renew_holdings CASCADE;
+CREATE auto_renew_holdings AS 
+SELECT holdings 
+FROM overdue_data o JOIN qualifying_patrons p ON o.holdings = p.holdings;
 
 -- Define views for your intermediate steps here, and end with a
 -- INSERT, DELETE, or UPDATE statement.
 
 UPDATE Checkout 
 SET checkout_time = checkout_time + interval '168 hours'
-WHERE holding = ANY (SELECT holding FROM qualifying_patrons);
+WHERE holding = ANY (SELECT holding FROM auto_renew_holdings);
