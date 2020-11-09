@@ -52,7 +52,7 @@ GROUP BY o.patron
 HAVING max(overdue) <= 7;
 
 DROP VIEW IF EXISTS auto_renew_holdings CASCADE;
-CREATE auto_renew_holdings AS 
+CREATE VIEW auto_renew_holdings AS 
 SELECT holdings 
 FROM overdue_data o JOIN qualifying_patrons p ON o.holdings = p.holdings;
 
