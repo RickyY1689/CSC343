@@ -21,7 +21,7 @@ DROP VIEW IF EXISTS intermediate_step CASCADE;
 -- Gets all holdings with only one contributor 
 DROP VIEW IF EXISTS author_publications;
 CREATE VIEW author_publications AS 
-SELECT holding, max(contributor) contributor
+SELECT holding, max(contributor) author
 FROM HoldingContributor 
 GROUP BY holding 
 HAVING count(contributor) = 1;
@@ -29,8 +29,28 @@ HAVING count(contributor) = 1;
 -- Gets all books with only one contributor 
 DROP VIEW IF EXISTS single_author_books;
 CREATE VIEW single_author_books AS 
-SELECT holding, contributor 
+SELECT holding, author
 FROM author_publications JOIN Holding ON holding=id 
 WHERE htype = 'books';
+
+-- Get a count of all books written by each contributor 
+DROP VIEW IF EXISTS author_works; 
+CREATE VIEW author_works AS 
+SELECT author, count(holding)
+FROM single_author_books 
+GROUP BY author
+-- Gets all checkouts of books with single authors 
+DROP VIEW IF EXISTS book_checkouts; 
+CREATE VIEW book_checkouts AS 
+SELECT patron, author, count(c.holding) books_checked_out
+FROM Checkout c JOIN single_author_books s ON c.holding = s.holding
+GROUP BY patron, author;
+
+-- Get a count of author works checked out by the patrons 
+-- DROP VIEW IF EXISTS patron_author_count;
+-- CREATE VIEW patron_author_count AS 
+-- SELECT patron, author, count(holding)
+-- FROM book_checkouts
+
 -- Your query that answers the question goes below the "insert into" line:
 -- insert into q6
