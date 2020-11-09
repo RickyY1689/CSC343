@@ -17,12 +17,20 @@ DROP VIEW IF EXISTS intermediate_step CASCADE;
 
 
 -- Define views for your intermediate steps here:
+
+-- Gets all holdings with only one contributor 
 DROP VIEW IF EXISTS author_publications;
 CREATE VIEW author_publications AS 
-SELECT holding, max(contributor)
+SELECT holding, max(contributor) contributor
 FROM HoldingContributor 
 GROUP BY holding 
 HAVING count(contributor) = 1;
 
+-- Gets all books with only one contributor 
+DROP VIEW IF EXISTS single_author_books;
+CREATE VIEW single_author_books AS 
+SELECT holding, contributor 
+FROM author_publications JOIN Holding ON holding=id 
+WHERE htype = 'book';
 -- Your query that answers the question goes below the "insert into" line:
-insert into q6
+-- insert into q6
