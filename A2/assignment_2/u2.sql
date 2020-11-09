@@ -12,7 +12,7 @@ DROP VIEW IF EXISTS downsview_checkouts CASCADE;
 CREATE VIEW downsview_checkouts AS
 SELECT library branch, id, patron, holding, DATE(checkout_time) checkout_time
 FROM Checkout 
-WHERE library = 'Downsview';
+WHERE library = (SELECT code FROM LibraryBranch WHERE name='Downsview');
 
 -- Get all the checkouts which have yet to be returned 
 DROP VIEW IF EXISTS not_returned_checkouts CASCADE;
