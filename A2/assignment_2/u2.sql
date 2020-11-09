@@ -9,7 +9,7 @@ DROP VIEW IF EXISTS intermediate_step CASCADE;
 
 -- Get all checkouts from the branches in the php ward
 DROP VIEW IF EXISTS downsview_checkouts CASCADE;
-CREATE VIEW php_branches_checkouts AS
+CREATE VIEW downsview_checkouts AS
 SELECT library branch, id, patron, holding, DATE(checkout_time) checkout_time
 FROM Checkout 
 WHERE library = 'Downsview';
