@@ -31,21 +31,21 @@ FROM LibraryBranch JOIN Ward ON ward=id
 WHERE Ward.name = 'Parkdale-High Park';
 
 -- Get all checkouts from the branches in the php ward
-DROP VIEW IF EXISTS php_branches_checkouts;
+DROP VIEW IF EXISTS php_branches_checkouts CASCADE;
 CREATE VIEW php_branches_checkouts AS
 SELECT library branch, id, patron, holding, DATE(checkout_time) checkout_time
 FROM Checkout 
 WHERE library = ANY ( SELECT * FROM php_branches);
 
 -- Get all the checkouts which have yet to be returned 
-DROP VIEW IF EXISTS not_returned_checkouts;
+DROP VIEW IF EXISTS not_returned_checkouts CASCADE;
 CREATE VIEW not_returned_checkouts AS 
 SELECT branch, id, patron, holding, DATE(checkout_time) checkout_time
 FROM php_branches_checkouts
 WHERE id != ANY (SELECT checkout FROM Return);
 
 -- Determines the duedates for all items yet to be returned from php ward branches
-DROP VIEW IF EXISTS duedate_data;
+DROP VIEW IF EXISTS duedate_data CASCADE;
 CREATE VIEW duedate_data AS
 SELECT branch, patron, title, checkout_time, 
 CASE 
@@ -57,7 +57,7 @@ END duedate
 FROM not_returned_checkouts n JOIN Holding h ON n.holding = h.id;
 
 -- Determine overdue books 
-DROP VIEW IF EXISTS overdue_data;
+DROP VIEW IF EXISTS overdue_data CASCADE;
 CREATE VIEW overdue_data AS
 SELECT branch, title, email, ((SELECT current_date)-duedate)::INTEGER overdue
 FROM duedate_data JOIN Patron ON patron = card_number 
