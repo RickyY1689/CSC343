@@ -38,7 +38,8 @@ DROP VIEW IF EXISTS author_works;
 CREATE VIEW author_works AS 
 SELECT author, count(holding)
 FROM single_author_books 
-GROUP BY author
+GROUP BY author;
+
 -- Gets all checkouts of books with single authors 
 DROP VIEW IF EXISTS book_checkouts; 
 CREATE VIEW book_checkouts AS 
