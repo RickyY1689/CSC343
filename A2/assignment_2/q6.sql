@@ -31,6 +31,6 @@ DROP VIEW IF EXISTS single_author_books;
 CREATE VIEW single_author_books AS 
 SELECT holding, contributor 
 FROM author_publications JOIN Holding ON holding=id 
-WHERE htype = 'book';
+WHERE htype = 'books';
 -- Your query that answers the question goes below the "insert into" line:
 -- insert into q6
