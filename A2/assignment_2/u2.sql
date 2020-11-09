@@ -48,8 +48,8 @@ DROP VIEW IF EXISTS qualifying_patrons CASCADE;
 CREATE VIEW qualifying_patrons AS 
 SELECT o.patron
 FROM overdue_data o JOIN small_checkouts s ON o.patron = s.patron
-GROUP BY o.patron;
-HAVING max(overdue) <= 7
+GROUP BY o.patron
+HAVING max(overdue) <= 7;
 
 -- Define views for your intermediate steps here, and end with a
 -- INSERT, DELETE, or UPDATE statement.
