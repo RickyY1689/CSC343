@@ -59,7 +59,7 @@ DROP VIEW IF EXISTS commited_fans CASCADE;
 CREATE VIEW commited_fans AS 
 SELECT b1.patron, b1.author, b1.books_checked_out
 FROM book_checkouts b1 JOIN book_reviews b2 ON (b1.patron=b2.patron AND b1.author=b2.author)
-WHERE b1.books_checked_out = b2.book_reviewed AND avg_rating >= 4;
+WHERE b1.books_checked_out = b2.books_reviewed AND avg_rating >= 4;
 
 -- Gets all fans who have read all or all but one of an authors works
 DROP VIEW IF EXISTS devoted_fans CASCADE;
