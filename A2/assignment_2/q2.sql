@@ -42,7 +42,7 @@ DROP VIEW IF EXISTS not_returned_checkouts;
 CREATE VIEW not_returned_checkouts AS 
 SELECT id, patron, DATE(checkout_time) checkout_time
 FROM php_branches_checkouts
-WHERE id != ANY (SELECT checkout FROM Return)
+WHERE id != ANY (SELECT checkout FROM Return);
 
 -- Determines the duedates for all items yet to be returned from php ward branches
 DROP VIEW IF EXISTS duedate_data;
@@ -54,6 +54,6 @@ CASE
     WHEN htype = 'books' OR htype = 'audiobooks'
         THEN checkout_time + 21
 END duedate
-FROM php_branches_checkouts p JOIN Holding h ON p.holding = h.id 
+FROM php_branches_checkouts p JOIN Holding h ON p.holding = h.id;
 -- Your query that answers the question goes below the "insert into" line:
 --insert into q2
