@@ -50,7 +50,7 @@ GROUP BY patron, author;
 -- Gets reviews written by patrons who have checked out the books written by authors 
 DROP VIEW IF EXISTS book_reviews; 
 CREATE VIEW book_checkouts AS 
-SELECT patron, author, count(reviews) books_reviewed, avg(stars) avg_rating
+SELECT patron, author, count(review) books_reviewed, avg(stars) avg_rating
 FROM Review r JOIN single_author_books s ON r.holding = s.holding
 GROUP BY patron, author;
 
