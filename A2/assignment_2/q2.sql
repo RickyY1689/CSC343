@@ -59,7 +59,7 @@ FROM not_returned_checkouts n JOIN Holding h ON n.holding = h.id;
 -- Determine overdue books 
 DROP VIEW IF EXISTS overdue_data;
 CREATE VIEW overdue_data AS
-SELECT branch, title, email, TEXT((SELECT current_date)-duedate) overdue
+SELECT branch, title, email, INT((SELECT current_date)-duedate) overdue
 FROM duedate_data JOIN Patron ON patron = card_number 
 WHERE duedate < (SELECT current_date);
 
