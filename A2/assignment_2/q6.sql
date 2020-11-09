@@ -68,6 +68,12 @@ SELECT c.patron, c.author
 FROM commited_fans c JOIN author_works a ON c.author=a.author
 WHERE c.books_checked_out >= a.books_written - 1;
 
+DROP VIEW IF EXISTS patron_devotedness CASCADE;
+CREATE VIEW patron_devotedness AS 
+SELECT p.card_number, count(author)
+FROM devoted_fans d FULL JOIN Patron p ON d.patron = p.card_number
+GROUP BY p.card_number;
+
 -- Get a count of author works checked out by the patrons 
 -- DROP VIEW IF EXISTS patron_author_count;
 -- CREATE VIEW patron_author_count AS 
@@ -76,6 +82,4 @@ WHERE c.books_checked_out >= a.books_written - 1;
 
 -- Your query that answers the question goes below the "insert into" line:
 insert into q6
-SELECT patron, count(author)
-FROM devoted_fans
-GROUP BY patron;
+SELECT * FROM patron_devotedness;
