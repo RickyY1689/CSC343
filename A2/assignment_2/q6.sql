@@ -75,4 +75,7 @@ WHERE c.books_checked_out >= a.books_written - 1;
 -- FROM book_checkouts
 
 -- Your query that answers the question goes below the "insert into" line:
--- insert into q6
+insert into q6
+SELECT patron, count(author)
+FROM devoted_fans
+GROUP BY patron;
