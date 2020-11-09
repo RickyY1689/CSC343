@@ -29,7 +29,7 @@ HAVING count(contributor) = 1;
 -- Gets all books with only one contributor 
 DROP VIEW IF EXISTS single_author_books;
 CREATE VIEW single_author_books AS 
-SELECT holding, contributor author
+SELECT holding, author
 FROM author_publications JOIN Holding ON holding=id 
 WHERE htype = 'books';
 
