@@ -51,8 +51,8 @@ class Example {
                 // with postgres on the CS teaching labs -- but you would 
                 // replace "dianeh" with your CS teaching labs account name.
                 // Password really does need to be the emtpy string.
-                url = "jdbc:postgresql://localhost:5432/csc343h-dianeh";
-                conn = DriverManager.getConnection(url, "dianeh", "");
+                url = "jdbc:postgresql://localhost:5432/csc343h-yangric6";
+                conn = DriverManager.getConnection(url, "yangric6", "");
 
                 // Show all the guesses stored in the database.
                 // Executing this particular query without having first

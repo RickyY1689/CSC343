@@ -26,5 +26,7 @@ CREATE VIEW ward_events AS
 SELECT l1.eventId, l1.branch, l2.ward 
 FROM library_events l1 JOIN LibraryBranch l2 ON l1.branch = l2.code
 
+SELECT count(DISTINCT ward)
+FROM ward_events;
 -- Your query that answers the question goes below the "insert into" line:
 --insert into q4
