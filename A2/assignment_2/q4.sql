@@ -18,7 +18,7 @@ DROP VIEW IF EXISTS intermediate_step CASCADE;
 -- Define views for your intermediate steps here:
 DROP VIEW IF EXISTS library_events CASCADE;
 CREATE VIEW room_events AS 
-SELECT l1.id eventId, l2.library branch
+SELECT l2.id eventId, l1.library branch
 FROM LibraryRoom l1 JOIN LibraryEvent l2 ON l1.id=l2.room;
 
 DROP VIEW IF EXISTS ward_events CASCADE;
