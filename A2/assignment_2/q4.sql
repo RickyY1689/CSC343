@@ -24,9 +24,19 @@ FROM LibraryRoom l1 JOIN LibraryEvent l2 ON l1.id=l2.room;
 DROP VIEW IF EXISTS ward_events CASCADE;
 CREATE VIEW ward_events AS
 SELECT l1.eventId, l1.branch, l2.ward 
-FROM library_events l1 JOIN LibraryBranch l2 ON l1.branch = l2.code
+FROM library_events l1 JOIN LibraryBranch l2 ON l1.branch = l2.code;
 
-SELECT count(DISTINCT ward)
-FROM ward_events;
+-- Get patrons and the events they've signed up for and the associated year
+DROP VIEW IF EXISTS attended_events CASCADE;
+CREATE VIEW attended_events AS 
+SELECT patron, e1.event eventId, EXTRACT(YEAR from edate) year
+FROM EventSignUp e1 JOIN EventSchedule e2 ON e1.event = e2.event;
+
+-- Determine the wards associated with each event 
+DROP VIEW IF EXISTS attended_events_wards CASCADE;
+CREATE VIEW attended_events_wards AS 
+SELECT patron, eventId, year, ward
+FROM attended_events a JOIN ward_events w ON a.eventId = w.eventId
+
 -- Your query that answers the question goes below the "insert into" line:
 --insert into q4
