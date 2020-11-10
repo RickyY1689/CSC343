@@ -35,8 +35,14 @@ FROM EventSignUp e1 JOIN EventSchedule e2 ON e1.event = e2.event;
 -- Determine the wards associated with each event 
 DROP VIEW IF EXISTS attended_events_wards CASCADE;
 CREATE VIEW attended_events_wards AS 
-SELECT patron, eventId, year, ward
-FROM attended_events a JOIN ward_events w ON a.eventId = w.eventId
+SELECT patron, a.eventId, eventYear, ward
+FROM attended_events a JOIN ward_events w ON a.eventId = w.eventId;
 
+-- Determine the number of wards a patron has visited in each calander year
+DROP VIEW IF EXISTS patron_event_coverage CASCADE;
+CREATE VIEW patron_event_coverage AS 
+SELECT patron, eventYear, count(DISTINCT ward)
+FROM attended_events_wards
+GROUP BY patron, eventYear;
 -- Your query that answers the question goes below the "insert into" line:
 --insert into q4
