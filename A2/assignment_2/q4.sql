@@ -29,7 +29,7 @@ FROM library_events l1 JOIN LibraryBranch l2 ON l1.branch = l2.code;
 -- Get patrons and the events they've signed up for and the associated year
 DROP VIEW IF EXISTS attended_events CASCADE;
 CREATE VIEW attended_events AS 
-SELECT patron, e1.event eventId, EXTRACT(YEAR from edate) year
+SELECT patron, e1.event eventId, EXTRACT(YEAR from edate) eventYear
 FROM EventSignUp e1 JOIN EventSchedule e2 ON e1.event = e2.event;
 
 -- Determine the wards associated with each event 
