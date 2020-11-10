@@ -27,4 +27,4 @@ SELECT l1.eventId, l1.branch, l2.ward
 FROM library_events l1 JOIN LibraryBranch l2 ON l1.branch = l2.code
 
 -- Your query that answers the question goes below the "insert into" line:
-insert into q4
+--insert into q4
