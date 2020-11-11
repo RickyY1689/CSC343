@@ -60,5 +60,5 @@ FROM overdue_data o JOIN qualifying_patrons p ON o.patron = p.patron;
 -- INSERT, DELETE, or UPDATE statement.
 
 UPDATE Checkout 
-SET checkout_time = checkout_time + interval '168 hours'
+SET checkout_time = checkout_time + interval '336 hours'
 WHERE holding = ANY (SELECT holding FROM auto_renew_holdings);
