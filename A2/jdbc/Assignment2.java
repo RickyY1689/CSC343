@@ -102,7 +102,7 @@ public class Assignment2 {
       // Iterate through the result set and report on each row.
       while (rs.next()) {
       String title = rs.getString("title");
-      results.add(title)
+      results.add(title);
       System.out.println(title);
       } 
     } catch (SQLException se) {
