@@ -78,6 +78,34 @@ public class Assignment2 {
    */
   public ArrayList<String> search(String lastName, String branch) {
     // Replace the line below and implement this method!
+    String queryString;
+    PreparedStatement pStatement;
+    ResultSet rs;
+
+    try {
+      queryString = "DROP VIEW IF EXISTS branch_holdings CASCADE; " +
+                    "CREATE VIEW branch_holdings AS " + 
+                    "SELECT holding " + 
+                    "FROM LibraryCatalogue " +
+                    "WHERE library = (SELECT code FROM LibraryBranch WHERE name = 'Bayview'); " +
+                    "DROP VIEW IF EXISTS branch_holdings_contrib CASCADE; " + 
+                    "CREATE VIEW branch_holdings_contrib AS " +
+                    "SELECT b.holding " +
+                    "FROM branch_holdings b JOIN HoldingContributor h ON b.holding = h.holding " + 
+                    "WHERE h.contributor = (SELECT id FROM Contributor WHERE last_name = 'Cooke'); ";
+      pStatement = connection.prepareStatement(queryString);
+      rs = pStatement.executeQuery();
+
+      // Iterate through the result set and report on each row.
+      while (rs.next()) {
+      String code = rs.getString("code");
+      int ward = rs.getInt("ward");
+      System.out.println(code + ":" + ward);
+      } 
+    } catch (SQLException se) {
+      System.err.println("SQL Exception." +
+        "<Message>: " + se.getMessage());
+    }
     return null;
   }
 
@@ -173,6 +201,7 @@ public class Assignment2 {
       // username, of course.
       a2.connectDB("jdbc:postgresql://localhost:5432/csc343h-yangric6", "yangric6", "");
       a2.test_query();
+      a2.search("Cooke", "Bayview");
       // You can call your methods here to test them. It will not affect our 
       // autotester.
       System.out.println("Boo!");

@@ -1,16 +1,17 @@
 -- search: A method that would be called when a patron searches for all holdings by a given contributor at a
 --given branch
-DROP VIEW IF EXIST branch_holdings CASCADE;
+DROP VIEW IF EXISTS branch_holdings CASCADE;
 CREATE VIEW branch_holdings AS
 SELECT holding
-FROM LibraryCataglogue 
+FROM LibraryCatalogue 
 WHERE library = (SELECT code FROM LibraryBranch WHERE name = *BRANCH*);
 
-DROP VIEW IF EXIST branch_holdings_contrib CASCADE;
+DROP VIEW IF EXISTS branch_holdings_contrib CASCADE;
 CREATE VIEW branch_holdings_contrib AS 
-SELECT holdings 
+SELECT b.holding
 FROM branch_holdings b JOIN HoldingContributor h ON b.holding = h.holding
 WHERE h.contributor = (SELECT id FROM Contributor WHERE last_name = *CONTRIBUTOR*);
+Cooke
 
 present branch_holdings_contrib
 
@@ -21,3 +22,17 @@ VALUES (*CARDNUMBER*, *EVENTID*);
 -- item return: A method that would be called when a patron returns an item
 INSERT INTO Return 
 VALUES (*CHECKOUT*, *GET TIME FROM JAVA*)
+
+
+
+DROP VIEW IF EXISTS branch_holdings CASCADE;
+CREATE VIEW branch_holdings AS
+SELECT holding
+FROM LibraryCatalogue 
+WHERE library = (SELECT code FROM LibraryBranch WHERE name = 'Bayview');
+
+DROP VIEW IF EXISTS branch_holdings_contrib CASCADE;
+CREATE VIEW branch_holdings_contrib AS 
+SELECT b.holding
+FROM branch_holdings b JOIN HoldingContributor h ON b.holding = h.holding
+WHERE h.contributor = (SELECT id FROM Contributor WHERE last_name = 'Cooke');
