@@ -143,11 +143,10 @@ public class Assignment2 {
       String code = rs.getString("code");
       int ward = rs.getInt("ward");
       System.out.println(code + ":" + ward);
+      } 
     } catch (SQLException se) {
       System.err.println("SQL Exception." +
         "<Message>: " + se.getMessage());
-    }
-
     }
     return 0.0;
   }
