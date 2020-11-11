@@ -129,8 +129,11 @@ public class Assignment2 {
   }
 
   public double test_query() {
+    String queryString;
+    PreparedStatement pStatement;
+    ResultSet rs;
     queryString = "select * from LibraryBranch";
-                pStatement = conn.prepareStatement(queryString);
+                pStatement = connection.prepareStatement(queryString);
                 rs = pStatement.executeQuery();
 
                 // Iterate through the result set and report on each row.
