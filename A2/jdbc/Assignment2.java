@@ -42,6 +42,10 @@ public class Assignment2 {
   public boolean connectDB(String url, String username, String password) {
     try {
       connection = DriverManager.getConnection(url, username, password);
+      queryString = "SET SEARCH_PATH TO Library, public;";
+      pStatement = conn.prepareStatement(queryString);
+      int rows = pStatement.executeUpdate();
+		  System.out.println("connected");
     } catch (SQLException se) {
         System.err.println("SQL Exception." +
                 "<Message>: " + se.getMessage());
@@ -142,7 +146,7 @@ public class Assignment2 {
       // hard-coded in the method.  (This is different from the JDBC code
       // we worked on in a class exercise.) Replace the XXXXs with your
       // username, of course.
-      a2.connectDB("jdbc:postgresql://localhost:5432/csc343h-XXXX", "XXXX", "");
+      a2.connectDB("jdbc:postgresql://localhost:5432/csc343h-yangric6", "yangric6", "");
 
       // You can call your methods here to test them. It will not affect our 
       // autotester.

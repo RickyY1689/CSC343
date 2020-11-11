@@ -60,11 +60,11 @@ class KatBasic {
                 // hard-coded.  No one can inject any SQL code into our query.
                 // But let's get in the habit of using a prepared statement.
                 // Notice that there is no semi-colon at the end of the query.
-		queryString = "SET SEARCH_PATH TO Library, public;";
-		pStatement = conn.prepareStatement(queryString);
-		System.out.println("not connected");
+		        queryString = "SET SEARCH_PATH TO Library, public;";
+		        pStatement = conn.prepareStatement(queryString);
+		        System.out.println("not connected");
                 int rows = pStatement.executeUpdate();
-		System.out.println("connected");
+		        System.out.println("connected");
                 queryString = "select * from LibraryBranch";
                 pStatement = conn.prepareStatement(queryString);
                 rs = pStatement.executeQuery();
