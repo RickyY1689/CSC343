@@ -49,7 +49,7 @@ DROP VIEW IF EXISTS answer CASCADE;
 CREATE VIEW answer AS 
 SELECT distinct patron
 FROM patron_event_coverage
-GROUP BY patron, date_part
+GROUP BY patron, eventYear
 HAVING wardVisited =
     (SELECT count(distinct ward) 
     FROM LibraryBranch);
