@@ -165,7 +165,7 @@ public class Assignment2 {
       queryString = "select * from LibraryBranch";
       pStatement = connection.prepareStatement(queryString);
       rs = pStatement.executeQuery();
-
+      system.out.println(rs);
       // Iterate through the result set and report on each row.
       while (rs.next()) {
       String code = rs.getString("code");
