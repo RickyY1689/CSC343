@@ -40,6 +40,8 @@ public class Assignment2 {
    * @return true if connecting is successful, false otherwise
    */
   public boolean connectDB(String url, String username, String password) {
+    String queryString;
+    PreparedStatement pStatement;
     try {
       connection = DriverManager.getConnection(url, username, password);
       queryString = "SET SEARCH_PATH TO Library, public;";
