@@ -132,15 +132,22 @@ public class Assignment2 {
     String queryString;
     PreparedStatement pStatement;
     ResultSet rs;
-    queryString = "select * from LibraryBranch";
-                pStatement = connection.prepareStatement(queryString);
-                rs = pStatement.executeQuery();
 
-                // Iterate through the result set and report on each row.
-    while (rs.next()) {
-        String code = rs.getString("code");
-        int ward = rs.getInt("ward");
-        System.out.println(code + ":" + ward);
+    try {
+      queryString = "select * from LibraryBranch";
+      pStatement = connection.prepareStatement(queryString);
+      rs = pStatement.executeQuery();
+
+      // Iterate through the result set and report on each row.
+      while (rs.next()) {
+      String code = rs.getString("code");
+      int ward = rs.getInt("ward");
+      System.out.println(code + ":" + ward);
+    } catch (SQLException se) {
+      System.err.println("SQL Exception." +
+        "<Message>: " + se.getMessage());
+    }
+
     }
     return 0.0;
   }
