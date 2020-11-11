@@ -139,7 +139,7 @@ public class Assignment2 {
         int ward = rs.getInt("ward");
         System.out.println(code + ":" + ward);
     }
-    return 0.0
+    return 0.0;
   }
 
   public static void main(String[] args) {
