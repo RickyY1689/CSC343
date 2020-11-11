@@ -81,6 +81,7 @@ public class Assignment2 {
     String queryString;
     PreparedStatement pStatement;
     ResultSet rs;
+    ArrayList<String> results = new ArrayList<String>();
 
     try {
       queryString = "DROP VIEW IF EXISTS branch_holdings CASCADE; " +
@@ -92,21 +93,23 @@ public class Assignment2 {
                     "CREATE VIEW branch_holdings_contrib AS " +
                     "SELECT b.holding " +
                     "FROM branch_holdings b JOIN HoldingContributor h ON b.holding = h.holding " + 
-                    "WHERE h.contributor = (SELECT id FROM Contributor WHERE last_name = 'Cooke'); ";
+                    "WHERE h.contributor = (SELECT id FROM Contributor WHERE last_name = 'Cooke'); " + 
+                    "SELECT title " + 
+                    "FROM branch_holdings_contrib b JOIN Holding h ON b.holding = h.id;";
       pStatement = connection.prepareStatement(queryString);
       rs = pStatement.executeQuery();
 
       // Iterate through the result set and report on each row.
       while (rs.next()) {
-      String code = rs.getString("code");
-      int ward = rs.getInt("ward");
-      System.out.println(code + ":" + ward);
+      String title = rs.getString("title");
+      results.add(title)
+      System.out.println(title);
       } 
     } catch (SQLException se) {
       System.err.println("SQL Exception." +
         "<Message>: " + se.getMessage());
     }
-    return null;
+    return results;
   }
 
   /**
