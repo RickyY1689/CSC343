@@ -42,7 +42,7 @@ DROP VIEW IF EXISTS not_returned_checkouts CASCADE;
 CREATE VIEW not_returned_checkouts AS 
 SELECT branch, id, patron, holding, DATE(checkout_time) checkout_time
 FROM php_branches_checkouts
-WHERE id != ANY (SELECT checkout FROM Return);
+WHERE id != ALL (SELECT checkout FROM Return);
 
 -- Determines the duedates for all items yet to be returned from php ward branches
 DROP VIEW IF EXISTS duedate_data CASCADE;
