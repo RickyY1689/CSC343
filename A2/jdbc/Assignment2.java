@@ -229,7 +229,7 @@ public class Assignment2 {
       a2.test_query();
       searchResults = a2.search("Cooke", "Bayview");
       System.out.println(searchResults);
-      System.out.println(a2.register("9909621460757", 6));
+      System.out.println(a2.register("9909621460757", 11));
       // You can call your methods here to test them. It will not affect our 
       // autotester.
       System.out.println("Boo!");
