@@ -41,8 +41,19 @@ FROM attended_events a JOIN ward_events w ON a.eventId = w.eventId;
 -- Determine the number of wards a patron has visited in each calander year
 DROP VIEW IF EXISTS patron_event_coverage CASCADE;
 CREATE VIEW patron_event_coverage AS 
-SELECT patron, eventYear, count(DISTINCT ward)
+SELECT patron, eventYear, count(DISTINCT ward) wardVisited
 FROM attended_events_wards
 GROUP BY patron, eventYear;
+
+DROP VIEW IF EXISTS answer CASCADE;
+CREATE VIEW answer AS 
+SELECT distinct patron
+FROM patron_event_coverage
+GROUP BY patron, date_part
+HAVING wardVisited =
+    (SELECT count(distinct ward) 
+    FROM LibraryBranch);
+
 -- Your query that answers the question goes below the "insert into" line:
---insert into q4
+insert into q4
+select * from answer;
