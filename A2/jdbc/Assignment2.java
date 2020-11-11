@@ -88,15 +88,17 @@ public class Assignment2 {
                     "CREATE VIEW branch_holdings AS " + 
                     "SELECT holding " + 
                     "FROM LibraryCatalogue " +
-                    "WHERE library = (SELECT code FROM LibraryBranch WHERE name = 'Bayview'); " +
+                    "WHERE library = (SELECT code FROM LibraryBranch WHERE name = ?); " +
                     "DROP VIEW IF EXISTS branch_holdings_contrib CASCADE; " + 
                     "CREATE VIEW branch_holdings_contrib AS " +
                     "SELECT b.holding " +
                     "FROM branch_holdings b JOIN HoldingContributor h ON b.holding = h.holding " + 
-                    "WHERE h.contributor = (SELECT id FROM Contributor WHERE last_name = 'Cooke'); " + 
+                    "WHERE h.contributor = (SELECT id FROM Contributor WHERE last_name = ?); " + 
                     "SELECT title " + 
                     "FROM branch_holdings_contrib b JOIN Holding h ON b.holding = h.id;";
       pStatement = connection.prepareStatement(queryString);
+      pStatement.setString(1, branch);
+      pStatement.setString(2, lastName);
       rs = pStatement.executeQuery();
 
       // Iterate through the result set and report on each row.
@@ -188,6 +190,7 @@ public class Assignment2 {
     try {
       // Demo of using an ArrayList.
       ArrayList<String> baking = new ArrayList<String>();
+      ArrayList<String> searchResults = new ArrayList<String>();
       baking.add("croissant");
       baking.add("choux pastry");
       baking.add("jelly roll");
@@ -204,7 +207,8 @@ public class Assignment2 {
       // username, of course.
       a2.connectDB("jdbc:postgresql://localhost:5432/csc343h-yangric6", "yangric6", "");
       a2.test_query();
-      a2.search("Cooke", "Bayview");
+      searchResults = a2.search("Cooke", "Bayview");
+      System.out.println(searchResults);
       // You can call your methods here to test them. It will not affect our 
       // autotester.
       System.out.println("Boo!");
