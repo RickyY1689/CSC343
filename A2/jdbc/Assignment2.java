@@ -128,6 +128,20 @@ public class Assignment2 {
     return 0.0;
   }
 
+  public double test_query() {
+    queryString = "select * from LibraryBranch";
+                pStatement = conn.prepareStatement(queryString);
+                rs = pStatement.executeQuery();
+
+                // Iterate through the result set and report on each row.
+    while (rs.next()) {
+        String code = rs.getString("code");
+        int ward = rs.getInt("ward");
+        System.out.println(code + ":" + ward);
+    }
+    return 0.0
+  }
+
   public static void main(String[] args) {
 
     Assignment2 a2;
@@ -149,7 +163,7 @@ public class Assignment2 {
       // we worked on in a class exercise.) Replace the XXXXs with your
       // username, of course.
       a2.connectDB("jdbc:postgresql://localhost:5432/csc343h-yangric6", "yangric6", "");
-
+      a2.test_query();
       // You can call your methods here to test them. It will not affect our 
       // autotester.
       System.out.println("Boo!");
