@@ -39,9 +39,10 @@ WHERE duedate < (SELECT current_date);
 DROP VIEW IF EXISTS small_checkouts CASCADE;
 CREATE VIEW small_checkouts AS 
 SELECT patron
-FROM Checkout 
+FROM Checkout c JOIN Holding h ON c.holding = h.id
+WHERE h.htype = 'books'
 GROUP BY patron
-HAVING count(id) <= 5;
+HAVING count(c.id) <= 5;
 
 -- Qualifying patrons who have less than 5 books checked out and none are overdue by more than 7 days
 DROP VIEW IF EXISTS qualifying_patrons CASCADE;
