@@ -45,7 +45,7 @@ public class Assignment2 {
     try {
       connection = DriverManager.getConnection(url, username, password);
       queryString = "SET SEARCH_PATH TO Library, public;";
-      pStatement = conn.prepareStatement(queryString);
+      pStatement = connection.prepareStatement(queryString);
       int rows = pStatement.executeUpdate();
 		  System.out.println("connected");
     } catch (SQLException se) {
