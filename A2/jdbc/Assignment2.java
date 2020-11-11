@@ -133,7 +133,7 @@ public class Assignment2 {
         ResultSet rs;
     
         try {
-          queryString = "INSERT INTO EventSignUp VALUES (?, ?);"
+          queryString = "INSERT INTO EventSignUp VALUES (?, ?);";
           pStatement = connection.prepareStatement(queryString);
           pStatement.setString(1, cardNumber);
           pStatement.setInt(2, eventID);
