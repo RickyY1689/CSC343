@@ -127,8 +127,28 @@ public class Assignment2 {
    *                     (as per the above criteria), and false otherwise.
    */
   public boolean register(String cardNumber, int eventID) {
-    // Replace the line below and implement this method!
-    return false;
+        // Replace the line below and implement this method!
+        String queryString;
+        PreparedStatement pStatement;
+        ResultSet rs;
+    
+        try {
+          queryString = "INSERT INTO EventSignUp VALUES (?, ?);"
+          pStatement = connection.prepareStatement(queryString);
+          pStatement.setString(1, cardNumber);
+          pStatement.setInt(2, eventID);
+          rs = pStatement.executeQuery();
+    
+          // Iterate through the result set and report on each row.
+          while (rs.next()) {
+          System.out.println(rs.next());
+          } 
+        } catch (SQLException se) {
+          System.err.println("SQL Exception." +
+            "<Message>: " + se.getMessage());
+          return false;
+        }
+    return true;
   }
 
   /**
@@ -209,6 +229,7 @@ public class Assignment2 {
       a2.test_query();
       searchResults = a2.search("Cooke", "Bayview");
       System.out.println(searchResults);
+      System.out.println(a2.register("9909621460757", 6));
       // You can call your methods here to test them. It will not affect our 
       // autotester.
       System.out.println("Boo!");
