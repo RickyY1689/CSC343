@@ -22,7 +22,7 @@
 import java.sql.*;
 import java.io.*;
 
-class Example {
+class kat_basic {
     
     public static void main(String args[]) throws IOException
         {
