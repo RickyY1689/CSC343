@@ -189,13 +189,13 @@ public class Assignment2 {
 
     
     try {
-      queryString = "INSERT INTO Return " + 
-        "VALUES (?, ?);";
-      pStatement = connection.prepareStatement(queryString);
-      pStatement.setInt(1, checkout);
-      pStatement.setTimestamp(2, returnTime);
-      row = pStatement.executeUpdate();
-      System.out.println(row);
+      // queryString = "INSERT INTO Return " + 
+      //   "VALUES (?, ?);";
+      // pStatement = connection.prepareStatement(queryString);
+      // pStatement.setInt(1, checkout);
+      // pStatement.setTimestamp(2, returnTime);
+      // row = pStatement.executeUpdate();
+      // System.out.println(row);
       queryString = "SELECT holding, library " + 
         "FROM Checkout " + 
         "WHERE id = ?;";
@@ -217,19 +217,16 @@ public class Assignment2 {
       pStatement.setInt(1, holdingID);
       pStatement.setString(2, library);
       row = pStatement.executeUpdate();
-
-      queryString = "DROP VIEW IF EXISTS checkout_data CASCADE; " +
-        "CREATE VIEW checkout_data AS " + 
-        "SELECT holding, htype, DATE(checkout_time) checkout_time, CASE " + 
+      System.out.println(row);
+      
+      queryString = "SELECT holding, htype, DATE(checkout_time) checkout_time, CASE " + 
           "WHEN htype = 'movies' OR htype = 'music' OR htype = 'magazines and newspapers' " +
             "THEN DATE(checkout_time) + 7 " + 
           "WHEN htype = 'books' OR htype = 'audiobooks' " +
             "THEN DATE(checkout_time) + 21 " +
         "END duedate " +
         "FROM Checkout c JOIN Holding h ON c.holding = h.id " + 
-        "WHERE c.id = ?;" + 
-        "SELECT duedate " +
-        "FROM checkout_data;";
+        "WHERE c.id = ?;"
       pStatement = connection.prepareStatement(queryString);
       pStatement.setInt(1, checkout);
       rs = pStatement.executeQuery();
