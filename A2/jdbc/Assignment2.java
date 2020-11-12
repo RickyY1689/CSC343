@@ -231,7 +231,7 @@ public class Assignment2 {
       pStatement.setInt(1, checkout);
       rs = pStatement.executeQuery();
       if (rs.next()) {
-        daysOverdue = rs.getDate("days_overdue");
+        daysOverdue = rs.getInt("days_overdue");
         hType = rs.getString("htype");
       }
 
