@@ -181,7 +181,7 @@ public class Assignment2 {
     ResultSet rs;
     Timestamp returnTime = new Timestamp(System.currentTimeMillis());
     Date dueDate;
-    String htype;
+    String hType;
     int holdingID;
     int row;
     double chargesIncurred;
@@ -234,8 +234,8 @@ public class Assignment2 {
         hType = rs.getString("htype");
       }
 
-      System.out.print(dueDate);
-      System.out.print(hType);
+      System.out.println(dueDate);
+      System.out.println(hType);
 
     } catch (SQLException se) {
       // Handles cases 1 and 2 (error cases)
