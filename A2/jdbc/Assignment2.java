@@ -236,11 +236,7 @@ public class Assignment2 {
     Assignment2 a2;
     try {
       // Demo of using an ArrayList.
-      ArrayList<String> baking = new ArrayList<String>();
       ArrayList<String> searchResults = new ArrayList<String>();
-      baking.add("croissant");
-      baking.add("choux pastry");
-      baking.add("jelly roll");
 
       // Make an instance of the Assignment2 class.  It has an instance 
       // variable that will hold on to our database connection as long
@@ -257,6 +253,9 @@ public class Assignment2 {
       searchResults = a2.search("Cooke", "Bayview");
       System.out.println(searchResults);
       System.out.println(a2.register("9909621460757", 11));
+
+      a2.item_return(59);
+
       // You can call your methods here to test them. It will not affect our 
       // autotester.
       System.out.println("Boo!");
