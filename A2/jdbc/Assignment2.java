@@ -86,9 +86,7 @@ public class Assignment2 {
     ArrayList<String> results = new ArrayList<String>();
 
     try {
-      queryString = "DROP VIEW IF EXISTS branch_holdings CASCADE; " +
-                    "CREATE VIEW branch_holdings AS " + 
-                    "SELECT holding " + 
+      queryString = "SELECT holding " + 
                     "FROM LibraryCatalogue " +
                     "WHERE library = (SELECT code FROM LibraryBranch WHERE name = ?); " +
                     "DROP VIEW IF EXISTS branch_holdings_contrib CASCADE; " + 
@@ -215,14 +213,12 @@ public class Assignment2 {
       pStatement.setString(2, library);
       row = pStatement.executeUpdate();
 
-      queryString = "SELECT holding, htype, DATE(checkout_time) checkout_time, CASE " + 
-          "WHEN htype = 'movies' OR htype = 'music' OR htype = 'magazines and newspapers' " +
-            "THEN ((SELECT current_date) - DATE(checkout_time) + 7)::INTEGER " + 
-          "WHEN htype = 'books' OR htype = 'audiobooks' " +
-            "THEN ((SELECT current_date) - DATE(checkout_time) + 21)::INTEGER " +
-        "END days_overdue " +
-        "FROM Checkout c JOIN Holding h ON c.holding = h.id " + 
-        "WHERE c.id = ?;";
+      queryString = "SELECT b.holding " +
+        "FROM (SELECT holding " + 
+        "FROM LibraryCatalogue " + 
+        "WHERE library = (SELECT code FROM LibraryBranch WHERE name = ?)) " +
+        "b JOIN HoldingContributor h ON b.holding = h.holding " + 
+        "WHERE h.contributor = (SELECT id FROM Contributor WHERE last_name = ?);";
       pStatement = connection.prepareStatement(queryString);
       pStatement.setInt(1, checkout);
       rs = pStatement.executeQuery();
