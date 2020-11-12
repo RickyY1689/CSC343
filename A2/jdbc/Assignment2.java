@@ -295,7 +295,7 @@ public class Assignment2 {
       System.out.println(searchResults);
       System.out.println(a2.register("9909621460757", 11));
 
-      a2.item_return(255);
+      System.out.println(a2.item_return(255));
 
       // You can call your methods here to test them. It will not affect our 
       // autotester.
