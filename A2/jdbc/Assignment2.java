@@ -180,7 +180,7 @@ public class Assignment2 {
     PreparedStatement pStatement;
     ResultSet rs;
     Timestamp returnTime = new Timestamp(System.currentTimeMillis());
-    Date dueDate = new Date(Calendar.getInstance().getTime().getTime());
+    Date dueDate = new Date(System.currentTimeMillis());
     String hType = "";
     int holdingID = 0;
     int row;
