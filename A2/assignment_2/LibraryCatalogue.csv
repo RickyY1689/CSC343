@@ -119,8 +119,8 @@ LE   ,2190,fiction toe,1,1
 MI   ,2190,fiction toe,1,1
 TRL  ,2197,m787.3542 k12 op.98,1,1
 TRL  ,2202,488.3421 h58 \b tape grc,6,6
-DM   ,2243,feature bre,1,1
-BY   ,2243,feature bre,1,1
+DM   ,2243,feature bre,1,0
+BY   ,2243,feature bre,20,1
 CC   ,2243,feature bre,1,1
 BC   ,2243,feature bre,1,1
 LB   ,2243,feature bre,1,1
@@ -130,7 +130,7 @@ RD   ,2243,feature bre,1,1
 AP   ,2243,feature bre,1,1
 EG   ,2243,feature bre,1,1
 EA   ,2243,feature bre,1,1
-YO   ,2243,feature bre,1,1
+YO   ,2243,feature bre,20,1
 TRL  ,2244,m784.506 c133 b26,1,1
 VV   ,2353,feature som,1,1
 BE   ,2353,feature som,1,1

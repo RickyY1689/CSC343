@@ -182,6 +182,7 @@ public class Assignment2 {
     Timestamp returnTime = new Timestamp(System.currentTimeMillis());
     Date dueDate = new Date(System.currentTimeMillis());
     String hType = "";
+    String library = "";
     int holdingID = 0;
     int row;
     double chargesIncurred = 0;
@@ -195,7 +196,7 @@ public class Assignment2 {
       pStatement.setTimestamp(2, returnTime);
       row = pStatement.executeUpdate();
 
-      queryString = "SELECT holding " + 
+      queryString = "SELECT holding, library" + 
         "FROM Checkout " + 
         "WHERE id = ?;";
       pStatement = connection.prepareStatement(queryString);
