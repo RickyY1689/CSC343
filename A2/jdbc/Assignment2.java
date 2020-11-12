@@ -198,7 +198,7 @@ public class Assignment2 {
       rs = pStatement.executeQuery();
       //holdingID = rs.getInt("holding");
 
-      System.out.println(rs);
+      System.out.println(rs.getInt("holding"));
     } catch (SQLException se) {
       // Handles cases 1 and 2 (error cases)
       System.err.println("SQL Exception." +
@@ -254,7 +254,7 @@ public class Assignment2 {
       System.out.println(searchResults);
       System.out.println(a2.register("9909621460757", 11));
 
-      a2.item_return(255);
+      a2.item_return(256);
 
       // You can call your methods here to test them. It will not affect our 
       // autotester.
