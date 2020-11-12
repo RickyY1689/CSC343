@@ -47,14 +47,14 @@ DROP VIEW IF EXISTS branch_events_sessions CASCADE;
 CREATE VIEW branch_events_sessions AS 
 SELECT branchId, branchYear, avg(e.event) avgSessions
 FROM branch_events_data b JOIN EventSchedule e ON b.eventId = e.event 
-GROUP BY branchId, eventYear;
+GROUP BY branchId, branchYear;
 
 -- Stores the number of registrations at a branch during some year 
 DROP VIEW IF EXISTS branch_events_reg CASCADE;
 CREATE VIEW branch_events_reg AS 
 SELECT branchId, branchYear, count(patron) 
 FROM branch_events_data b JOIN EventSignUp e ON b.eventId = e.event 
-GROUP BY branchId, eventYear;
+GROUP BY branchId, branchYear;
 
 -- get num of holdings at all branches 
 DROP VIEW IF EXISTS branch_holdings CASCADE;
@@ -68,7 +68,7 @@ DROP VIEW IF EXISTS branch_num_checkouts CASCADE;
 CREATE VIEW branch_num_checkouts AS 
 SELECT library branchID, EXTRACT(YEAR from DATE(checkout_time)) branchYear, count(*)
 FROM Checkout
-GROUP BY branchId, eventYear
+GROUP BY branchId, branchYear
 HAVING EXTRACT(YEAR from DATE(checkout_time)) >= 2015 AND EXTRACT(YEAR from DATE(checkout_time)) <= 2019;
 
 -- get the checkout information formated
@@ -81,10 +81,10 @@ WHERE EXTRACT(YEAR from DATE(checkout_time)) >= 2015 AND EXTRACT(YEAR from DATE(
 -- get average number of days between checkout and return for all items 
 DROP VIEW IF EXISTS branch_return_time CASCADE;
 CREATE VIEW branch_return_time AS 
-SELECT branchID, eventYear, avg(return_time) avg_return_time
+SELECT branchID, branchYear, avg(return_time) avg_return_time
 FROM (SELECT branchID, branchYear, (DATE(return_time) - checkout_time)::INTEGER return_time
     FROM branch_checkout b JOIN Return r ON b.checkoutId = r.checkout) rs
-GROUP BY branchID, eventYear;
+GROUP BY branchID, branchYear;
 
 SELECT * 
 FROM branch_years NATURAL LEFT JOIN branch_events_sessions;
