@@ -131,7 +131,6 @@ public class Assignment2 {
         // Replace the line below and implement this method!
         String queryString;
         PreparedStatement pStatement;
-        ResultSet rs;
         int row;
 
         try {
@@ -140,11 +139,7 @@ public class Assignment2 {
           pStatement.setString(1, cardNumber);
           pStatement.setInt(2, eventID);
           row = pStatement.executeUpdate();
-          
-          // Iterate through the result set and report on each row.
-          while (rs.next()) {
-          System.out.println(rs.next());
-          } 
+          System.out.println(row);
         } catch (SQLException se) {
           System.err.println("SQL Exception." +
             "<Message>: " + se.getMessage());
@@ -201,11 +196,8 @@ public class Assignment2 {
       pStatement = connection.prepareStatement(queryString);
       pStatement.setInt(1, checkout);
       rs = pStatement.executeQuery();
+      holdingID = rs.getInt("holding");
 
-      // Iterate through the result set and report on each row.
-      while (rs.next()) {
-        holdingID = rs.getInt("holding");
-      } 
       System.out.println(holdingID);
     } catch (SQLException se) {
       // Handles cases 1 and 2 (error cases)
