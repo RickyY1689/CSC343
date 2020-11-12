@@ -14,6 +14,7 @@
 import java.sql.*;
 import java.util.ArrayList;
 import java.sql.Timestamp;
+import java.sql.Date;
 
 public class Assignment2 {
 
@@ -173,15 +174,19 @@ public class Assignment2 {
    * @return           the amount of fines incurred if the return operation
    *                   was successful, -1 otherwise.
    */
-  public boolean item_return(int checkout) {
+  public double item_return(int checkout) {
     // Replace the line below and implement this method!
     String queryString;
     PreparedStatement pStatement;
     ResultSet rs;
     Timestamp returnTime = new Timestamp(System.currentTimeMillis());
+    Date dueDate;
+    String htype;
     int holdingID;
     int row;
+    double chargesIncurred;
 
+    
     try {
       queryString = "INSERT INTO Return " + 
         "VALUES (?, ?);";
@@ -198,15 +203,47 @@ public class Assignment2 {
       rs = pStatement.executeQuery();
       //holdingID = rs.getInt("holding");
       if (rs.next()) {
-        System.out.println(rs.getInt("holding"));
+        holdingID = rs.getInt("holding");
       }
+
+      queryString = "UPDATE LibraryCatalogue " + 
+        "SET copies_available = copies_available + 1 " + 
+        "WHERE holding = ?;";
+      pStatement = connection.prepareStatement(queryString);
+      pStatement.setInt(1, holdingID);
+      row = pStatement.executeUpdate();
+
+      queryString = "DROP VIEW IF EXISTS checkout_data CASCADE; " +
+        "CREATE VIEW checkout_data AS " + \
+        "SELECT holding, htype, DATE(checkout_time) checkout_time, CASE " + 
+          "WHEN htype = 'movies' OR htype = 'music' OR htype = 'magazines and newspapers' " +
+            "THEN DATE(checkout_time) + 7 " + 
+          "WHEN htype = 'books' OR htype = 'audiobooks' " +
+            "THEN DATE(checkout_time) + 21 " +
+        "END duedate " +
+        "FROM Checkout c JOIN Holding h ON c.holding = h.id " + 
+        "WHERE c.id = ?;" + 
+        "SELECT duedate " +
+        "FROM checkout_data;";
+      pStatement = connection.prepareStatement(queryString);
+      pStatement.setInt(1, checkout);
+      rs = pStatement.executeQuery();
+      //holdingID = rs.getInt("holding");
+      if (rs.next()) {
+        dueDate = rs.getDate("duedate");
+        hType = rs.getString("htype");
+      }
+
+      System.out.print(dueDate)
+      System.out.print(hType)
+
     } catch (SQLException se) {
       // Handles cases 1 and 2 (error cases)
       System.err.println("SQL Exception." +
         "<Message>: " + se.getMessage());
-      return false;
+      return -1;
     }
-    return true;
+    return chargesIncurred;
   }
 
   public double test_query() {
@@ -255,7 +292,7 @@ public class Assignment2 {
       System.out.println(searchResults);
       System.out.println(a2.register("9909621460757", 11));
 
-      a2.item_return(257);
+      a2.item_return(255);
 
       // You can call your methods here to test them. It will not affect our 
       // autotester.
