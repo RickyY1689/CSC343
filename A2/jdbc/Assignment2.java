@@ -94,12 +94,13 @@ public class Assignment2 {
     ArrayList<String> results = new ArrayList<String>();
 
     try {
-      queryString = "SELECT b.holding " +
-        "FROM (SELECT holding " + 
-        "FROM LibraryCatalogue " + 
-        "WHERE library = (SELECT code FROM LibraryBranch WHERE name = ?)) " +
-        "b JOIN HoldingContributor h ON b.holding = h.holding " + 
-        "WHERE h.contributor = (SELECT id FROM Contributor WHERE last_name = ?);";
+      queryString = "SELECT title " + 
+        "FROM (SELECT b.holding " +
+            "FROM (SELECT holding " +
+            "FROM LibraryCatalogue " + 
+            "WHERE library = (SELECT code FROM LibraryBranch WHERE name = 'Bayview')) b JOIN HoldingContributor h ON b.holding = h.holding " + 
+            "WHERE h.contributor = (SELECT id FROM Contributor WHERE last_name = 'Cooke')) b " +
+        "JOIN Holding h ON b.holding = h.id;";
       pStatement = connection.prepareStatement(queryString);
       pStatement.setString(1, branch);
       pStatement.setString(2, lastName);
