@@ -240,7 +240,7 @@ public class Assignment2 {
       if (hType == "books" || hType == "audiobooks") {
         chargesIncurred = 0.5*daysOverdue;
       } else {
-        System.out.println("hello!")
+        System.out.println("hello!");
         chargesIncurred = 1*daysOverdue;
       }
 
