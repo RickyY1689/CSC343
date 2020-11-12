@@ -202,7 +202,7 @@ public class Assignment2 {
       pStatement = connection.prepareStatement(queryString);
       pStatement.setInt(1, checkout);
       rs = pStatement.executeQuery();
-      System.out.println("hello")
+      System.out.println("hello");
       if (rs.next()) {
         holdingID = rs.getInt("holding");
         library = rs.getString("library");
