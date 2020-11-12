@@ -218,7 +218,7 @@ public class Assignment2 {
       pStatement.setString(2, library);
       row = pStatement.executeUpdate();
       System.out.println(row);
-      
+
       queryString = "SELECT holding, htype, DATE(checkout_time) checkout_time, CASE " + 
           "WHEN htype = 'movies' OR htype = 'music' OR htype = 'magazines and newspapers' " +
             "THEN DATE(checkout_time) + 7 " + 
@@ -226,7 +226,7 @@ public class Assignment2 {
             "THEN DATE(checkout_time) + 21 " +
         "END duedate " +
         "FROM Checkout c JOIN Holding h ON c.holding = h.id " + 
-        "WHERE c.id = ?;"
+        "WHERE c.id = ?;";
       pStatement = connection.prepareStatement(queryString);
       pStatement.setInt(1, checkout);
       rs = pStatement.executeQuery();
