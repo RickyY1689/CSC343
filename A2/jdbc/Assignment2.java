@@ -196,7 +196,7 @@ public class Assignment2 {
       pStatement.setTimestamp(2, returnTime);
       row = pStatement.executeUpdate();
       System.out.println(row);
-      queryString = "SELECT holding, library" + 
+      queryString = "SELECT holding" + 
         "FROM Checkout " + 
         "WHERE id = ?;";
       pStatement = connection.prepareStatement(queryString);
@@ -205,7 +205,7 @@ public class Assignment2 {
       System.out.println("hello");
       if (rs.next()) {
         holdingID = rs.getInt("holding");
-        library = rs.getString("library");
+        //library = rs.getString("library");
       }
 
       // System.out.println(holdingID);
