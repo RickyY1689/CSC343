@@ -132,14 +132,15 @@ public class Assignment2 {
         String queryString;
         PreparedStatement pStatement;
         ResultSet rs;
-    
+        int row;
+
         try {
           queryString = "INSERT INTO EventSignUp VALUES (?, ?);";
           pStatement = connection.prepareStatement(queryString);
           pStatement.setString(1, cardNumber);
           pStatement.setInt(2, eventID);
-          rs = pStatement.executeUpdate();
-    
+          row = pStatement.executeUpdate();
+          
           // Iterate through the result set and report on each row.
           while (rs.next()) {
           System.out.println(rs.next());
@@ -177,21 +178,22 @@ public class Assignment2 {
    * @return           the amount of fines incurred if the return operation
    *                   was successful, -1 otherwise.
    */
-  public double item_return(int checkout) {
+  public boolean item_return(int checkout) {
     // Replace the line below and implement this method!
     String queryString;
     PreparedStatement pStatement;
     ResultSet rs;
     Timestamp returnTime = new Timestamp(System.currentTimeMillis());
     int holdingID;
+    int row;
 
     try {
       queryString = "INSERT INTO Return " + 
         "VALUES (?, ?);";
       pStatement = connection.prepareStatement(queryString);
       pStatement.setInt(1, checkout);
-      pStatement.setString(2, returnTime);
-      rs = pStatement.executeUpdate();
+      pStatement.setTimestamp(2, returnTime);
+      row = pStatement.executeUpdate();
 
       queryString = "SELECT holding " + 
         "FROM Checkout " + 
