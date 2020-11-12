@@ -51,10 +51,11 @@ public class Assignment2 {
       int rows = pStatement.executeUpdate();
 		  System.out.println("connected");
     } catch (SQLException se) {
-        System.err.println("SQL Exception." +
-                "<Message>: " + se.getMessage());
+      System.err.println("SQL Exception." +
+              "<Message>: " + se.getMessage());
+      return false;
     }
-    return false;
+    return true;
   }
 
   /**
@@ -63,16 +64,8 @@ public class Assignment2 {
    * @return true if the closing was successful, false otherwise
    */
   public boolean disconnectDB() {
-     // Replace the line below and implement this method!
-     try{
-      connection.close();
-      return true;
-    }
-    catch (SQLException se) {
-      System.err.println("SQL Exception." +
-                "<Message>: " + se.getMessage());
-    return false;
-    } 
+    // Replace the line below and implement this method!
+    return false;	  
   }
    
   /**
@@ -94,16 +87,12 @@ public class Assignment2 {
     ArrayList<String> results = new ArrayList<String>();
 
     try {
-      queryString = "SELECT holding " + 
-                    "FROM LibraryCatalogue " +
-                    "WHERE library = (SELECT code FROM LibraryBranch WHERE name = ?); " +
-                    "DROP VIEW IF EXISTS branch_holdings_contrib CASCADE; " + 
-                    "CREATE VIEW branch_holdings_contrib AS " +
-                    "SELECT b.holding " +
-                    "FROM branch_holdings b JOIN HoldingContributor h ON b.holding = h.holding " + 
-                    "WHERE h.contributor = (SELECT id FROM Contributor WHERE last_name = ?); " + 
-                    "SELECT title " + 
-                    "FROM branch_holdings_contrib b JOIN Holding h ON b.holding = h.id;";
+      queryString = "SELECT b.holding " +
+        "FROM (SELECT holding " + 
+        "FROM LibraryCatalogue " + 
+        "WHERE library = (SELECT code FROM LibraryBranch WHERE name = ?)) " +
+        "b JOIN HoldingContributor h ON b.holding = h.holding " + 
+        "WHERE h.contributor = (SELECT id FROM Contributor WHERE last_name = ?);";
       pStatement = connection.prepareStatement(queryString);
       pStatement.setString(1, branch);
       pStatement.setString(2, lastName);
@@ -113,6 +102,7 @@ public class Assignment2 {
       while (rs.next()) {
         String title = rs.getString("title");
         results.add(title);
+        System.out.println(title);
       } 
     } catch (SQLException se) {
       System.err.println("SQL Exception." +
@@ -145,6 +135,7 @@ public class Assignment2 {
           pStatement.setString(1, cardNumber);
           pStatement.setInt(2, eventID);
           row = pStatement.executeUpdate();
+          System.out.println(row);
         } catch (SQLException se) {
           System.err.println("SQL Exception." +
             "<Message>: " + se.getMessage());
@@ -219,12 +210,14 @@ public class Assignment2 {
       pStatement.setString(2, library);
       row = pStatement.executeUpdate();
 
-      queryString = "SELECT b.holding " +
-        "FROM (SELECT holding " + 
-        "FROM LibraryCatalogue " + 
-        "WHERE library = (SELECT code FROM LibraryBranch WHERE name = ?)) " +
-        "b JOIN HoldingContributor h ON b.holding = h.holding " + 
-        "WHERE h.contributor = (SELECT id FROM Contributor WHERE last_name = ?);";
+      queryString = "SELECT holding, htype, DATE(checkout_time) checkout_time, CASE " + 
+          "WHEN htype = 'movies' OR htype = 'music' OR htype = 'magazines and newspapers' " +
+            "THEN ((SELECT current_date) - DATE(checkout_time) + 7)::INTEGER " + 
+          "WHEN htype = 'books' OR htype = 'audiobooks' " +
+            "THEN ((SELECT current_date) - DATE(checkout_time) + 21)::INTEGER " +
+        "END days_overdue " +
+        "FROM Checkout c JOIN Holding h ON c.holding = h.id " + 
+        "WHERE c.id = ?;";
       pStatement = connection.prepareStatement(queryString);
       pStatement.setInt(1, checkout);
       rs = pStatement.executeQuery();
