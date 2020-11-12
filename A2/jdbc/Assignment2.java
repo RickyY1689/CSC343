@@ -215,7 +215,7 @@ public class Assignment2 {
         "WHERE holding = ? AND library = ?;";
       pStatement = connection.prepareStatement(queryString);
       pStatement.setInt(1, holdingID);
-      pStatement.setInt(2, library);
+      pStatement.setString(2, library);
       row = pStatement.executeUpdate();
 
       queryString = "DROP VIEW IF EXISTS checkout_data CASCADE; " +
