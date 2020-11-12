@@ -180,9 +180,9 @@ public class Assignment2 {
     PreparedStatement pStatement;
     ResultSet rs;
     Timestamp returnTime = new Timestamp(System.currentTimeMillis());
-    Date dueDate;
-    String hType;
-    int holdingID;
+    Date dueDate = new Date();
+    String hType = "";
+    int holdingID = 0;
     int row;
     double chargesIncurred;
 
