@@ -39,7 +39,7 @@ class Example {
             String queryString;
 
             try {
-                Class.forName("org.postgresql.Driver");
+                Class.forName("org.postgresql.Driver"); 
             }
             catch (ClassNotFoundException e) {
                 System.out.println("Failed to find the JDBC driver");

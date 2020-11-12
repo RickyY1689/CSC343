@@ -2,14 +2,14 @@
 --given branch
 DROP VIEW IF EXISTS branch_holdings CASCADE;
 CREATE VIEW branch_holdings AS
-SELECT holding
-FROM LibraryCatalogue 
-WHERE library = (SELECT code FROM LibraryBranch WHERE name = *BRANCH*);
+
 
 DROP VIEW IF EXISTS branch_holdings_contrib CASCADE;
 CREATE VIEW branch_holdings_contrib AS 
 SELECT b.holding
-FROM branch_holdings b JOIN HoldingContributor h ON b.holding = h.holding
+FROM (SELECT holding
+FROM LibraryCatalogue 
+WHERE library = (SELECT code FROM LibraryBranch WHERE name = *BRANCH*)) b JOIN HoldingContributor h ON b.holding = h.holding
 WHERE h.contributor = (SELECT id FROM Contributor WHERE last_name = *CONTRIBUTOR*);
 Cooke
 
@@ -18,10 +18,14 @@ present branch_holdings_contrib
 -- register: A method that would be called when a patron registers for an event
 INSERT INTO EventSignUp 
 VALUES (*CARDNUMBER*, *EVENTID*);
+9909621460757	1
+
+INSERT INTO EventSignUp 
+VALUES (9909621460757, 1);
 
 -- item return: A method that would be called when a patron returns an item
 INSERT INTO Return 
-VALUES (*CHECKOUT*, *GET TIME FROM JAVA*)
+VALUES (*CHECKOUT*, *GET TIMESTAMP FROM JAVA*)
 
 
 
@@ -36,3 +40,56 @@ CREATE VIEW branch_holdings_contrib AS
 SELECT b.holding
 FROM branch_holdings b JOIN HoldingContributor h ON b.holding = h.holding
 WHERE h.contributor = (SELECT id FROM Contributor WHERE last_name = 'Cooke');
+
+SELECT title 
+FROM branch_holdings_contrib b JOIN Holding h ON b.holding = h.id;
+
+SELECT holding
+FROM Checkout
+WHERE id = THING 
+
+DONE ! NOw we increase thing by one in LibraryCatalogue
+
+UPDATE LibraryCatalogue 
+SET copies_available = copies_available + 1
+WHERE holding = THING;
+
+
+-- Determines the duedates for all items yet to be returned from php ward branches
+DROP VIEW IF EXISTS duedate_data CASCADE;
+CREATE VIEW duedate_data AS
+SELECT branch, patron, title, checkout_time, 
+CASE 
+    WHEN htype = 'movies' OR htype = 'music' OR htype = 'magazines and newspapers'
+        THEN checkout_time + 7
+    WHEN htype = 'books' OR htype = 'audiobooks'
+        THEN checkout_time + 21
+END duedate
+FROM not_returned_checkouts n JOIN Holding h ON n.holding = h.id;
+
+-- Determine overdue books 
+DROP VIEW IF EXISTS overdue_data CASCADE;
+CREATE VIEW overdue_data AS
+SELECT branch, holding, patron, ((SELECT current_date)-duedate)::INTEGER overdue
+FROM duedate_data JOIN Patron ON patron = card_number 
+WHERE duedate < (SELECT current_date);
+
+SELECT holding,
+
+SELECT title 
+FROM (SELECT b.holding
+    FROM (SELECT holding
+    FROM LibraryCatalogue 
+    WHERE library = 'JO') b JOIN HoldingContributor h ON b.holding = h.holding
+    WHERE h.contributor = (SELECT id FROM Contributor WHERE last_name = 'Wolper')) b 
+JOIN Holding h ON b.holding = h.id;
+
+
+SELECT holding, htype, DATE(checkout_time) checkout_time, CASE 
+          WHEN htype = 'movies' OR htype = 'music' OR htype = 'magazines and newspapers' 
+            THEN ((SELECT current_date) - (DATE(checkout_time) + 7))::INTEGER 
+          WHEN htype = 'books' OR htype = 'audiobooks' 
+            THEN ((SELECT current_date) - (DATE(checkout_time) + 21))::INTEGER 
+        END days_overdue 
+        FROM Checkout c JOIN Holding h ON c.holding = h.id 
+        WHERE c.id = ?;

@@ -98,7 +98,7 @@ public class Assignment2 {
         "FROM (SELECT b.holding " +
             "FROM (SELECT holding " +
             "FROM LibraryCatalogue " + 
-            "WHERE library = (SELECT code FROM LibraryBranch WHERE name = ?)) b JOIN HoldingContributor h ON b.holding = h.holding " + 
+            "WHERE library = ?) b JOIN HoldingContributor h ON b.holding = h.holding " + 
             "WHERE h.contributor = (SELECT id FROM Contributor WHERE last_name = ?)) b " +
         "JOIN Holding h ON b.holding = h.id;";
       pStatement = connection.prepareStatement(queryString);
@@ -220,9 +220,9 @@ public class Assignment2 {
 
       queryString = "SELECT holding, htype, DATE(checkout_time) checkout_time, CASE " + 
           "WHEN htype = 'movies' OR htype = 'music' OR htype = 'magazines and newspapers' " +
-            "THEN ((SELECT current_date) - DATE(checkout_time) + 7)::INTEGER " + 
+            "THEN ((SELECT current_date) - (DATE(checkout_time) + 7))::INTEGER " + 
           "WHEN htype = 'books' OR htype = 'audiobooks' " +
-            "THEN ((SELECT current_date) - DATE(checkout_time) + 21)::INTEGER " +
+            "THEN ((SELECT current_date) - (DATE(checkout_time) + 21))::INTEGER " +
         "END days_overdue " +
         "FROM Checkout c JOIN Holding h ON c.holding = h.id " + 
         "WHERE c.id = ?;";
