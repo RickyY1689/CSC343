@@ -237,7 +237,7 @@ public class Assignment2 {
       System.out.println(dueDate);
       System.out.println(hType);
 
-      if (htype == "books" || htype == "audiobooks") {
+      if (hType == "books" || hType == "audiobooks") {
         chargesIncurred = 0.5;
       } else {
         chargesIncurred = 1;
