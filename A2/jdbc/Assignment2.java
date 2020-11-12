@@ -213,7 +213,7 @@ public class Assignment2 {
         "<Message>: " + se.getMessage());
       return false;
     }
-    return 0.0;
+    return true;
   }
 
   public double test_query() {
