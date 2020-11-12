@@ -180,7 +180,7 @@ public class Assignment2 {
     PreparedStatement pStatement;
     ResultSet rs;
     Timestamp returnTime = new Timestamp(System.currentTimeMillis());
-    Date dueDate = new Date(System.currentTimeMillis());
+    int daysOverdue = 0;
     String hType = "";
     String library = "";
     int holdingID = 0;
@@ -221,22 +221,21 @@ public class Assignment2 {
 
       queryString = "SELECT holding, htype, DATE(checkout_time) checkout_time, CASE " + 
           "WHEN htype = 'movies' OR htype = 'music' OR htype = 'magazines and newspapers' " +
-            "THEN DATE(checkout_time) + 7 " + 
+            "THEN ((SELECT current_date) - DATE(checkout_time) + 7)::INTEGER " + 
           "WHEN htype = 'books' OR htype = 'audiobooks' " +
-            "THEN DATE(checkout_time) + 21 " +
-        "END duedate, ((SELECT current_date)-duedate)::INTEGER overdue " +
+            "THEN ((SELECT current_date) - DATE(checkout_time) + 21)::INTEGER " +
+        "END days_overdue, ((SELECT current_date)-duedate)::INTEGER overdue " +
         "FROM Checkout c JOIN Holding h ON c.holding = h.id " + 
         "WHERE c.id = ?;";
       pStatement = connection.prepareStatement(queryString);
       pStatement.setInt(1, checkout);
       rs = pStatement.executeQuery();
-      //holdingID = rs.getInt("holding");
       if (rs.next()) {
-        dueDate = rs.getDate("duedate");
+        daysOverdue = rs.getDate("days_overdue");
         hType = rs.getString("htype");
       }
 
-      System.out.println(dueDate);
+      System.out.println(daysOverdue);
       System.out.println(hType);
 
       if (hType == "books" || hType == "audiobooks") {
