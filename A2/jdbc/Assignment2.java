@@ -65,7 +65,7 @@ public class Assignment2 {
   public boolean disconnectDB() {
      // Replace the line below and implement this method!
      try{
-      connection.close()
+      connection.close();
       return true;
     }
     catch (SQLException se) {
@@ -113,7 +113,6 @@ public class Assignment2 {
       while (rs.next()) {
         String title = rs.getString("title");
         results.add(title);
-        System.out.println(title);
       } 
     } catch (SQLException se) {
       System.err.println("SQL Exception." +
@@ -146,7 +145,6 @@ public class Assignment2 {
           pStatement.setString(1, cardNumber);
           pStatement.setInt(2, eventID);
           row = pStatement.executeUpdate();
-          System.out.println(row);
         } catch (SQLException se) {
           System.err.println("SQL Exception." +
             "<Message>: " + se.getMessage());
