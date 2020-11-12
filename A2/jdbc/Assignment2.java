@@ -104,9 +104,9 @@ public class Assignment2 {
 
       // Iterate through the result set and report on each row.
       while (rs.next()) {
-      String title = rs.getString("title");
-      results.add(title);
-      System.out.println(title);
+        String title = rs.getString("title");
+        results.add(title);
+        System.out.println(title);
       } 
     } catch (SQLException se) {
       System.err.println("SQL Exception." +
@@ -196,9 +196,9 @@ public class Assignment2 {
       pStatement = connection.prepareStatement(queryString);
       pStatement.setInt(1, checkout);
       rs = pStatement.executeQuery();
-      holdingID = (rs.next()).getInt("holding");
+      //holdingID = rs.getInt("holding");
 
-      System.out.println(holdingID);
+      System.out.println(rs);
     } catch (SQLException se) {
       // Handles cases 1 and 2 (error cases)
       System.err.println("SQL Exception." +
