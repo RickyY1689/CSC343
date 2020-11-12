@@ -195,7 +195,7 @@ public class Assignment2 {
 
       queryString = "SELECT holding " + 
         "FROM Checkout " + 
-        "WHERE id = ?;" 
+        "WHERE id = ?;";
       pStatement = connection.prepareStatement(queryString);
       pStatement.setInt(1, checkout);
       rs = pStatement.executeQuery();
