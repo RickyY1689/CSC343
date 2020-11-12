@@ -224,7 +224,7 @@ public class Assignment2 {
             "THEN ((SELECT current_date) - DATE(checkout_time) + 7)::INTEGER " + 
           "WHEN htype = 'books' OR htype = 'audiobooks' " +
             "THEN ((SELECT current_date) - DATE(checkout_time) + 21)::INTEGER " +
-        "END days_overdue, ((SELECT current_date)-duedate)::INTEGER overdue " +
+        "END days_overdue " +
         "FROM Checkout c JOIN Holding h ON c.holding = h.id " + 
         "WHERE c.id = ?;";
       pStatement = connection.prepareStatement(queryString);
