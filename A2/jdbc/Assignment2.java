@@ -189,27 +189,24 @@ public class Assignment2 {
 
     
     try {
-      // queryString = "INSERT INTO Return " + 
-      //   "VALUES (?, ?);";
-      // pStatement = connection.prepareStatement(queryString);
-      // pStatement.setInt(1, checkout);
-      // pStatement.setTimestamp(2, returnTime);
-      // row = pStatement.executeUpdate();
-      // System.out.println(row);
+      queryString = "INSERT INTO Return " + 
+        "VALUES (?, ?);";
+      pStatement = connection.prepareStatement(queryString);
+      pStatement.setInt(1, checkout);
+      pStatement.setTimestamp(2, returnTime);
+      row = pStatement.executeUpdate();
+
       queryString = "SELECT holding, library " + 
         "FROM Checkout " + 
         "WHERE id = ?;";
       pStatement = connection.prepareStatement(queryString);
       pStatement.setInt(1, checkout);
       rs = pStatement.executeQuery();
-      System.out.println("hello");
       if (rs.next()) {
         holdingID = rs.getInt("holding");
         library = rs.getString("library");
       }
 
-      System.out.println(holdingID);
-      System.out.println(library);
       queryString = "UPDATE LibraryCatalogue " + 
         "SET copies_available = copies_available + 1 " + 
         "WHERE holding = ? AND library = ?;";
@@ -217,7 +214,6 @@ public class Assignment2 {
       pStatement.setInt(1, holdingID);
       pStatement.setString(2, library);
       row = pStatement.executeUpdate();
-      System.out.println(row);
 
       queryString = "SELECT holding, htype, DATE(checkout_time) checkout_time, CASE " + 
           "WHEN htype = 'movies' OR htype = 'music' OR htype = 'magazines and newspapers' " +
@@ -235,13 +231,13 @@ public class Assignment2 {
         hType = rs.getString("htype");
       }
 
-      System.out.println(daysOverdue);
-      System.out.println(hType);
+      //System.out.println(daysOverdue);
+      //System.out.println(hType);
 
       if (hType == "books" || hType == "audiobooks") {
-        chargesIncurred = 0.5;
+        chargesIncurred = 0.5*daysOverdue;
       } else {
-        chargesIncurred = 1;
+        chargesIncurred = 1*daysOverdue;
       }
 
     } catch (SQLException se) {
