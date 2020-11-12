@@ -184,7 +184,7 @@ public class Assignment2 {
     String hType = "";
     int holdingID = 0;
     int row;
-    double chargesIncurred;
+    double chargesIncurred = 0;
 
     
     try {
@@ -236,6 +236,12 @@ public class Assignment2 {
 
       System.out.println(dueDate);
       System.out.println(hType);
+
+      if (htype == "books" || htype == "audiobooks") {
+        chargesIncurred = 0.5;
+      } else {
+        chargesIncurred = 1;
+      }
 
     } catch (SQLException se) {
       // Handles cases 1 and 2 (error cases)
