@@ -205,13 +205,17 @@ public class Assignment2 {
       //holdingID = rs.getInt("holding");
       if (rs.next()) {
         holdingID = rs.getInt("holding");
+        library = rs.getString("library");
       }
 
+      System.out.println(holdingID);
+      System.out.println(library);
       queryString = "UPDATE LibraryCatalogue " + 
         "SET copies_available = copies_available + 1 " + 
-        "WHERE holding = ?;";
+        "WHERE holding = ? AND library = ?;";
       pStatement = connection.prepareStatement(queryString);
       pStatement.setInt(1, holdingID);
+      pStatement.setInt(2, library);
       row = pStatement.executeUpdate();
 
       queryString = "DROP VIEW IF EXISTS checkout_data CASCADE; " +
