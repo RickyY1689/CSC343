@@ -237,7 +237,7 @@ public class Assignment2 {
       //System.out.println(daysOverdue);
       //System.out.println(hType);
 
-      if (hType == "books" || hType == "audiobooks") {
+      if (hType.equals("books") || hType.equals("audiobooks")) {
         chargesIncurred = 0.5*daysOverdue;
       } else {
         System.out.println("hello!");
