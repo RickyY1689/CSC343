@@ -9,7 +9,7 @@ CREATE TABLE q1 (
     year INT,
     events INT NOT NULL,
     sessions FLOAT NOT NULL,
-    oh shregistration INT NOT NULL,
+    registration INT NOT NULL,
     holdings INT NOT NULL,
     checkouts INT NOT NULL,
     duration FLOAT
@@ -52,21 +52,21 @@ GROUP BY branchId, branchYear;
 -- Stores the number of registrations at a branch during some year 
 DROP VIEW IF EXISTS branch_events_reg CASCADE;
 CREATE VIEW branch_events_reg AS 
-SELECT branchId, branchYear, count(patron) 
+SELECT branchId, branchYear, count(patron) registrations
 FROM branch_events_data b JOIN EventSignUp e ON b.eventId = e.event 
 GROUP BY branchId, branchYear;
 
 -- get num of holdings at all branches 
 DROP VIEW IF EXISTS branch_holdings CASCADE;
 CREATE VIEW branch_holdings AS 
-SELECT library branchID, sum(num_holdings)
+SELECT library branchID, sum(num_holdings) num_holdings
 FROM LibraryCatalogue 
 GROUP BY library;
 
 -- get num of checkouts at all branches 
 DROP VIEW IF EXISTS branch_num_checkouts CASCADE;
 CREATE VIEW branch_num_checkouts AS 
-SELECT library branchID, EXTRACT(YEAR from DATE(checkout_time)) branchYear, count(*)
+SELECT library branchID, EXTRACT(YEAR from DATE(checkout_time)) branchYear, count(*) checkouts
 FROM Checkout
 GROUP BY branchId, branchYear
 HAVING EXTRACT(YEAR from DATE(checkout_time)) >= 2015 AND EXTRACT(YEAR from DATE(checkout_time)) <= 2019;
@@ -86,9 +86,32 @@ FROM (SELECT branchID, branchYear, (DATE(return_time) - checkout_time)::INTEGER 
     FROM branch_checkout b JOIN Return r ON b.checkoutId = r.checkout) rs
 GROUP BY branchID, branchYear;
 
+-- Adds together all the data 
+DROP VIEW IF EXISTS sol_with_nulls CASCADE;
+CREATE VIEW sol_with_nulls AS 
 SELECT * 
-FROM branch_years NATURAL LEFT JOIN branch_events_sessions;
+FROM ((((branch_years NATURAL LEFT JOIN branch_events_sessions) 
+    NATURAL LEFT JOIN branch_events_reg) 
+        NATURAL LEFT JOIN branch_holdings) 
+            NATURAL LEFT JOIN branch_num_checkouts)
+                NATURAL LEFT JOIN branch_return_time;
 
-
+-- DROP VIEW IF EXISTS sol CASCADE;
+-- CREATE VIEW sol AS 
+-- SELECT branchId branch, eventYear
+--     CASE 
+--         ...
+--     END 
 -- Your query that answers the question goes below the "insert into" line:
 -- insert into q1
+
+CREATE TABLE q1 (
+    branch CHAR(5),
+    year INT,
+    events INT NOT NULL,
+    sessions FLOAT NOT NULL,
+    registration INT NOT NULL,
+    holdings INT NOT NULL,
+    checkouts INT NOT NULL,
+    duration FLOAT
+);
