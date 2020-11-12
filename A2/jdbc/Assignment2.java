@@ -205,48 +205,48 @@ public class Assignment2 {
       System.out.println("hello");
       if (rs.next()) {
         holdingID = rs.getInt("holding");
-        //library = rs.getString("library");
+        library = rs.getString("library");
       }
 
-      // System.out.println(holdingID);
-      // System.out.println(library);
-      // queryString = "UPDATE LibraryCatalogue " + 
-      //   "SET copies_available = copies_available + 1 " + 
-      //   "WHERE holding = ? AND library = ?;";
-      // pStatement = connection.prepareStatement(queryString);
-      // pStatement.setInt(1, holdingID);
-      // pStatement.setString(2, library);
-      // row = pStatement.executeUpdate();
+      System.out.println(holdingID);
+      System.out.println(library);
+      queryString = "UPDATE LibraryCatalogue " + 
+        "SET copies_available = copies_available + 1 " + 
+        "WHERE holding = ? AND library = ?;";
+      pStatement = connection.prepareStatement(queryString);
+      pStatement.setInt(1, holdingID);
+      pStatement.setString(2, library);
+      row = pStatement.executeUpdate();
 
-      // queryString = "DROP VIEW IF EXISTS checkout_data CASCADE; " +
-      //   "CREATE VIEW checkout_data AS " + 
-      //   "SELECT holding, htype, DATE(checkout_time) checkout_time, CASE " + 
-      //     "WHEN htype = 'movies' OR htype = 'music' OR htype = 'magazines and newspapers' " +
-      //       "THEN DATE(checkout_time) + 7 " + 
-      //     "WHEN htype = 'books' OR htype = 'audiobooks' " +
-      //       "THEN DATE(checkout_time) + 21 " +
-      //   "END duedate " +
-      //   "FROM Checkout c JOIN Holding h ON c.holding = h.id " + 
-      //   "WHERE c.id = ?;" + 
-      //   "SELECT duedate " +
-      //   "FROM checkout_data;";
-      // pStatement = connection.prepareStatement(queryString);
-      // pStatement.setInt(1, checkout);
-      // rs = pStatement.executeQuery();
-      // //holdingID = rs.getInt("holding");
-      // if (rs.next()) {
-      //   dueDate = rs.getDate("duedate");
-      //   hType = rs.getString("htype");
-      // }
+      queryString = "DROP VIEW IF EXISTS checkout_data CASCADE; " +
+        "CREATE VIEW checkout_data AS " + 
+        "SELECT holding, htype, DATE(checkout_time) checkout_time, CASE " + 
+          "WHEN htype = 'movies' OR htype = 'music' OR htype = 'magazines and newspapers' " +
+            "THEN DATE(checkout_time) + 7 " + 
+          "WHEN htype = 'books' OR htype = 'audiobooks' " +
+            "THEN DATE(checkout_time) + 21 " +
+        "END duedate " +
+        "FROM Checkout c JOIN Holding h ON c.holding = h.id " + 
+        "WHERE c.id = ?;" + 
+        "SELECT duedate " +
+        "FROM checkout_data;";
+      pStatement = connection.prepareStatement(queryString);
+      pStatement.setInt(1, checkout);
+      rs = pStatement.executeQuery();
+      //holdingID = rs.getInt("holding");
+      if (rs.next()) {
+        dueDate = rs.getDate("duedate");
+        hType = rs.getString("htype");
+      }
 
-      // System.out.println(dueDate);
-      // System.out.println(hType);
+      System.out.println(dueDate);
+      System.out.println(hType);
 
-      // if (hType == "books" || hType == "audiobooks") {
-      //   chargesIncurred = 0.5;
-      // } else {
-      //   chargesIncurred = 1;
-      // }
+      if (hType == "books" || hType == "audiobooks") {
+        chargesIncurred = 0.5;
+      } else {
+        chargesIncurred = 1;
+      }
 
     } catch (SQLException se) {
       // Handles cases 1 and 2 (error cases)
