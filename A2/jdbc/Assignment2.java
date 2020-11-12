@@ -197,7 +197,7 @@ public class Assignment2 {
       pStatement.setInt(1, checkout);
       rs = pStatement.executeQuery();
       //holdingID = rs.getInt("holding");
-      if rs.next() {
+      if (rs.next()) {
         System.out.println(rs.getInt("holding"));
       }
     } catch (SQLException se) {
