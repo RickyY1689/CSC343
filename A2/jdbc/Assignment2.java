@@ -13,6 +13,7 @@
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.sql.Timestamp;
 
 public class Assignment2 {
 
@@ -137,7 +138,7 @@ public class Assignment2 {
           pStatement = connection.prepareStatement(queryString);
           pStatement.setString(1, cardNumber);
           pStatement.setInt(2, eventID);
-          rs = pStatement.executeQuery();
+          rs = pStatement.executeUpdate();
     
           // Iterate through the result set and report on each row.
           while (rs.next()) {
@@ -178,6 +179,38 @@ public class Assignment2 {
    */
   public double item_return(int checkout) {
     // Replace the line below and implement this method!
+    String queryString;
+    PreparedStatement pStatement;
+    ResultSet rs;
+    Timestamp returnTime = new Timestamp(System.currentTimeMillis());
+    int holdingID;
+
+    try {
+      queryString = "INSERT INTO Return " + 
+        "VALUES (?, ?);";
+      pStatement = connection.prepareStatement(queryString);
+      pStatement.setInt(1, checkout);
+      pStatement.setString(2, returnTime);
+      rs = pStatement.executeUpdate();
+
+      queryString = "SELECT holding " + 
+        "FROM Checkout " + 
+        "WHERE id = ?;" 
+      pStatement = connection.prepareStatement(queryString);
+      pStatement.setInt(1, checkout);
+      rs = pStatement.executeQuery();
+
+      // Iterate through the result set and report on each row.
+      while (rs.next()) {
+        holdingID = rs.getInt("holding");
+      } 
+      System.out.println(holdingID);
+    } catch (SQLException se) {
+      // Handles cases 1 and 2 (error cases)
+      System.err.println("SQL Exception." +
+        "<Message>: " + se.getMessage());
+      return false;
+    }
     return 0.0;
   }
 
