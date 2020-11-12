@@ -214,7 +214,7 @@ public class Assignment2 {
       row = pStatement.executeUpdate();
 
       queryString = "DROP VIEW IF EXISTS checkout_data CASCADE; " +
-        "CREATE VIEW checkout_data AS " + \
+        "CREATE VIEW checkout_data AS " + 
         "SELECT holding, htype, DATE(checkout_time) checkout_time, CASE " + 
           "WHEN htype = 'movies' OR htype = 'music' OR htype = 'magazines and newspapers' " +
             "THEN DATE(checkout_time) + 7 " + 
@@ -234,8 +234,8 @@ public class Assignment2 {
         hType = rs.getString("htype");
       }
 
-      System.out.print(dueDate)
-      System.out.print(hType)
+      System.out.print(dueDate);
+      System.out.print(hType);
 
     } catch (SQLException se) {
       // Handles cases 1 and 2 (error cases)
