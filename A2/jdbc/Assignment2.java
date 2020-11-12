@@ -98,8 +98,8 @@ public class Assignment2 {
         "FROM (SELECT b.holding " +
             "FROM (SELECT holding " +
             "FROM LibraryCatalogue " + 
-            "WHERE library = (SELECT code FROM LibraryBranch WHERE name = 'Bayview')) b JOIN HoldingContributor h ON b.holding = h.holding " + 
-            "WHERE h.contributor = (SELECT id FROM Contributor WHERE last_name = 'Cooke')) b " +
+            "WHERE library = (SELECT code FROM LibraryBranch WHERE name = ?)) b JOIN HoldingContributor h ON b.holding = h.holding " + 
+            "WHERE h.contributor = (SELECT id FROM Contributor WHERE last_name = ?)) b " +
         "JOIN Holding h ON b.holding = h.id;";
       pStatement = connection.prepareStatement(queryString);
       pStatement.setString(1, branch);
