@@ -42,6 +42,13 @@ SELECT DISTINCT branchId, EXTRACT(YEAR FROM edate) branchYear, e.event eventId
 FROM branch_events b JOIN EventSchedule e ON b.eventId = e.event 
 WHERE EXTRACT(YEAR FROM edate) >= 2015 AND EXTRACT(YEAR FROM edate) <= 2019;
 
+-- Stores the number of branches in some year 
+DROP VIEW IF EXISTS branch_num_events CASCADE;
+CREATE VIEW branch_num_events AS 
+SELECT branchId, branchYear, count(eventId) events
+FROM branch_events_data
+GROUP BY branchId, branchYear;
+
 -- Stores the average number of sessions for all events at a branch during some year 
 DROP VIEW IF EXISTS branch_events_sessions CASCADE;
 CREATE VIEW branch_events_sessions AS 
@@ -90,28 +97,55 @@ GROUP BY branchID, branchYear;
 DROP VIEW IF EXISTS sol_with_nulls CASCADE;
 CREATE VIEW sol_with_nulls AS 
 SELECT * 
-FROM ((((branch_years NATURAL LEFT JOIN branch_events_sessions) 
-    NATURAL LEFT JOIN branch_events_reg) 
-        NATURAL LEFT JOIN branch_holdings) 
-            NATURAL LEFT JOIN branch_num_checkouts)
-                NATURAL LEFT JOIN branch_return_time;
+FROM (((((branch_years NATURAL LEFT JOIN branch_num_events)
+    NATURAL LEFT JOIN branch_events_sessions) 
+        NATURAL LEFT JOIN branch_events_reg) 
+            NATURAL LEFT JOIN branch_holdings) 
+                NATURAL LEFT JOIN branch_num_checkouts)
+                    NATURAL LEFT JOIN branch_return_time;
 
--- DROP VIEW IF EXISTS sol CASCADE;
--- CREATE VIEW sol AS 
--- SELECT branchId branch, eventYear
---     CASE 
---         ...
---     END 
+-- Formats the null values 
+DROP VIEW IF EXISTS sol CASCADE;
+CREATE VIEW sol AS 
+SELECT branchId branch, branchyear,
+    CASE 
+        WHEN events is null
+            THEN 0
+        WHEN events is not null 
+            THEN events 
+    END events, 
+    CASE 
+        WHEN avgSessions is null 
+            THEN 0
+        WHEN avgSessions is not null 
+            THEN avgSessions
+    END sessions,
+    CASE 
+        WHEN registrations is null 
+            THEN 0
+        WHEN registrations is not null 
+            THEN registrations
+    END registration, 
+    CASE 
+        WHEN num_holdings is null 
+            THEN 0
+        WHEN num_holdings is not null 
+            THEN num_holdings
+    END holdings, 
+    CASE
+        WHEN checkouts is null 
+            THEN 0
+        WHEN checkouts is not null 
+            THEN checkouts
+    END checkouts, 
+    CASE 
+        WHEN avg_return_time is null 
+            THEN 0
+        WHEN avg_return_time is not null 
+            THEN avg_return_time
+    END duration
+FROM sol_with_nulls; 
+
 -- Your query that answers the question goes below the "insert into" line:
--- insert into q1
-
-CREATE TABLE q1 (
-    branch CHAR(5),
-    year INT,
-    events INT NOT NULL,
-    sessions FLOAT NOT NULL,
-    registration INT NOT NULL,
-    holdings INT NOT NULL,
-    checkouts INT NOT NULL,
-    duration FLOAT
-);
+insert into q1
+select * from sol;
